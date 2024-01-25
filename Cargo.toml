@@ -1,0 +1,11 @@
+[package]
+name = "redoc_try_it_out_rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3.67", features = ["Window", "Document", "HtmlElement", "HtmlScriptElement", "Event"] }
+
+[lib]
+crate-type = ["cdylib"]

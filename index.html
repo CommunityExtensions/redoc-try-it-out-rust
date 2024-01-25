@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World in Rust and WASM</title>
+</head>
+<body>
+    <script type="module">
+        import init, { create_hello_world_div, append_script_and_wait} from './pkg/redoc_try_it_out_rust.js';
+
+        async function run() {
+            await init();
+            create_hello_world_div();
+            append_script_and_wait("https://code.jquery.com/jquery-3.7.1.min.js", () => console.log("Script loaded!"));
+        }
+
+        run();
+    </script>
+</body>
+</html>
