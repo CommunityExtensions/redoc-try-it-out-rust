@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 wasm-bindgen = "0.2"
 web-sys = { version = "0.3.67", features = ["Window", "Document", "HtmlElement", "HtmlScriptElement", "Event"] }
+wasm-bindgen-futures = "0.4.24"
 
 [lib]
 crate-type = ["cdylib"]
