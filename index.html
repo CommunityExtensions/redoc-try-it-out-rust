@@ -5,12 +5,15 @@
 </head>
 <body>
     <script type="module">
-        import init, { create_hello_world_div, append_script_and_wait} from './pkg/redoc_try_it_out_rust.js';
+        import init, { RedocTryItOut } from './pkg/redoc_try_it_out_rust.js';
 
         async function run() {
             await init();
-            create_hello_world_div();
-            append_script_and_wait("https://code.jquery.com/jquery-3.7.1.min.js", () => console.log("Script loaded!"));
+            const redocTryItOut = new RedocTryItOut();
+            // Just a dummy script tag to load ReDoc, PoC only
+            redocTryItOut.add_script_tag("https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js", () => {
+                console.log("ReDoc loaded");
+            });
         }
 
         run();
