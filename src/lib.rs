@@ -55,16 +55,20 @@ impl RedocTryItOut {
 
         let promise = js_sys::Promise::new(&mut |resolve, reject| {
             let onload = Closure::wrap(Box::new(move |_| {
-                resolve.call0(&JsValue::NULL).unwrap();
+                if let Err(e) = resolve.call0(&JsValue::NULL) {
+                    log(&format!("Failed to resolve: {:?}", e));
+                }
             }) as Box<dyn FnMut(JsValue)>);
-    
+        
             let onerror = Closure::wrap(Box::new(move |_| {
-                reject.call0(&JsValue::NULL).unwrap();
+                if let Err(e) = reject.call0(&JsValue::NULL) {
+                    log(&format!("Failed to reject: {:?}", e));
+                }
             }) as Box<dyn FnMut(JsValue)>);
-    
+        
             script.set_onload(Some(onload.as_ref().unchecked_ref()));
             script.set_onerror(Some(onerror.as_ref().unchecked_ref()));
-    
+        
             onload.forget();
             onerror.forget();
         });
