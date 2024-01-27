@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
-use web_sys::{js_sys, window, Document, HtmlScriptElement};
+use web_sys::{js_sys, window, Document, Element, HtmlScriptElement};
 
 fn parse_option_for<T>(
     key: String,
@@ -40,6 +42,14 @@ fn parse_string_option_for(key: String, value: JsValue) -> Result<String, JsValu
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: &str);
+
+    #[wasm_bindgen(js_name = init, js_namespace = Redoc)]
+    async fn initRedoc(
+        docUrl: String,
+        options: JsValue,
+        element: Element,
+        callback: js_sys::Function,
+    );
 }
 
 #[wasm_bindgen]
@@ -47,32 +57,34 @@ pub struct RedocTryItOut {
     document: Document,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct ThemOptions {
-    spacing: Option<Spacing>,
-    breakpoints: Option<Breakpoints>,
-    colors: Option<Colors>,
-    typography: Option<Typography>,
-    menu: Option<Menu>,
-    logo: Option<Logo>,
-    right_panel: Option<RightPanel>,
+    spacing: Spacing,
+    breakpoints: Breakpoints,
+    colors: Colors,
+    typography: Typography,
+    menu: Menu,
+    logo: Logo,
+    right_panel: RightPanel,
 }
 
 impl Default for ThemOptions {
     fn default() -> Self {
         Self {
-            spacing: Option::default(),
-            breakpoints: Option::default(),
-            colors: Option::default(),
-            typography: Option::default(),
-            menu: Option::default(),
-            logo: Option::default(),
-            right_panel: Option::default(),
+            spacing: Default::default(),
+            breakpoints: Default::default(),
+            colors: Default::default(),
+            typography: Default::default(),
+            menu: Default::default(),
+            logo: Default::default(),
+            right_panel: Default::default(),
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct Spacing {
     pub unit: Option<u32>,
     pub section_horizontal: Option<u32>,
@@ -89,7 +101,8 @@ impl Default for Spacing {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct Breakpoints {
     pub small: Option<String>,
     pub medium: Option<String>,
@@ -106,7 +119,8 @@ impl Default for Breakpoints {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct Colors {
     pub tonal_offset: Option<f32>,
 }
@@ -119,7 +133,8 @@ impl Default for Colors {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Typography {
     pub font_size: Option<String>,
     pub line_height: Option<String>,
@@ -129,9 +144,9 @@ pub struct Typography {
     pub font_family: Option<String>,
     pub smoothing: Option<String>,
     pub optimize_speed: Option<bool>,
-    pub headings: Option<Headings>,
-    pub code: Option<Code>,
-    pub links: Option<Links>,
+    pub headings: Headings,
+    pub code: Code,
+    pub links: Links,
 }
 
 impl Default for Typography {
@@ -145,14 +160,15 @@ impl Default for Typography {
             font_family: Option::default(),
             smoothing: Option::default(),
             optimize_speed: Option::default(),
-            headings: Option::default(),
-            code: Option::default(),
-            links: Option::default(),
+            headings: Default::default(),
+            code: Default::default(),
+            links: Default::default(),
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Headings {
     pub font_family: Option<String>,
     pub font_weight: Option<u32>,
@@ -169,7 +185,8 @@ impl Default for Headings {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Code {
     pub font_size: Option<String>,
     pub font_family: Option<String>,
@@ -194,24 +211,26 @@ impl Default for Code {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Links {
-    pub color: Option<String>,
-    pub visited: Option<String>,
-    pub hover: Option<String>,
+    pub color: String,
+    pub visited: String,
+    pub hover: String,
 }
 
 impl Default for Links {
     fn default() -> Self {
         Self {
-            color: Option::default(),
-            visited: Option::default(),
-            hover: Option::default(),
+            color: Default::default(),
+            visited: Default::default(),
+            hover: Default::default(),
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct Menu {
     pub width: Option<String>,
     pub background_color: Option<String>,
@@ -219,7 +238,7 @@ pub struct Menu {
     pub active_text_color: Option<String>,
     pub group_items: Option<GroupItems>,
     pub level1_items: Option<Level1Items>,
-    pub arrow: Option<Arrow>,
+    pub arrow: Arrow,
 }
 
 impl Default for Menu {
@@ -231,12 +250,13 @@ impl Default for Menu {
             active_text_color: Option::default(),
             group_items: Option::default(),
             level1_items: Option::default(),
-            arrow: Option::default(),
+            arrow: Default::default(),
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct GroupItems {
     pub text_transform: Option<String>,
 }
@@ -249,12 +269,11 @@ impl Default for GroupItems {
     }
 }
 
-
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Level1Items {
     pub text_transform: Option<String>,
 }
-
 
 impl Default for Level1Items {
     fn default() -> Self {
@@ -264,7 +283,8 @@ impl Default for Level1Items {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Clone, Deserialize, Serialize)]
 pub struct Arrow {
     pub size: Option<String>,
     pub color: Option<String>,
@@ -279,7 +299,8 @@ impl Default for Arrow {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct Logo {
     pub max_height: Option<String>,
     pub max_width: Option<String>,
@@ -296,7 +317,8 @@ impl Default for Logo {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct RightPanel {
     pub background_color: Option<String>,
     pub width: Option<String>,
@@ -313,7 +335,8 @@ impl Default for RightPanel {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct DependenciesVersions {
     pub jquery: String,
     pub jquery_scroll_to: String,
@@ -328,7 +351,8 @@ impl Default for DependenciesVersions {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct AuthBtnOptions {
     pub pos_selector: Option<String>,
     pub text: Option<String>,
@@ -345,7 +369,8 @@ impl Default for AuthBtnOptions {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct TryBtnOptions {
     sibling_selector: Option<String>,
     text: Option<String>,
@@ -364,7 +389,8 @@ impl Default for TryBtnOptions {
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct SwaggerOptions {
     url: Option<String>,
     dom_id: Option<String>,
@@ -381,7 +407,6 @@ pub struct SwaggerOptions {
     auth_modal_class: Option<String>,
     selected_operation_container_class: Option<String>,
     wrapper_selector: Option<String>,
-    on_complete: Option<js_sys::Function>,
 }
 
 impl Default for SwaggerOptions {
@@ -402,13 +427,12 @@ impl Default for SwaggerOptions {
             auth_modal_class: Option::default(),
             selected_operation_container_class: Option::default(),
             wrapper_selector: Option::default(),
-            on_complete: Option::default(),
         }
     }
 }
 
-
-#[derive(Debug, Clone, PartialEq)]
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct StyleMatcherOptions {
     information_container_target_selector: Option<String>,
     auth_wrapper_target_selector: Option<String>,
@@ -554,7 +578,9 @@ impl Default for StyleMatcherOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct RedocTryItOutOptions {
+    docUrl: String,
     redoc_version: String,
     try_it_out_enabled: bool,
     try_it_box_container_id: String,
@@ -565,12 +591,13 @@ pub struct RedocTryItOutOptions {
     auth_btn: AuthBtnOptions,
     try_btn: TryBtnOptions,
     swagger_options: SwaggerOptions,
-    styler_matcher: StyleMatcherOptions
+    styler_matcher: StyleMatcherOptions,
 }
 
 impl Default for RedocTryItOutOptions {
     fn default() -> Self {
         Self {
+            docUrl: "https://petstore.swagger.io/v2/swagger.json".to_string(),
             redoc_version: "2.1.3".to_string(),
             try_it_out_enabled: true,
             try_it_box_container_id: "try-out-wrapper".to_string(),
@@ -587,6 +614,7 @@ impl Default for RedocTryItOutOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize)]
 pub struct RedocOptions {
     /** disable search indexing and search box */
     disable_search: Option<bool>,
@@ -652,7 +680,7 @@ pub struct RedocOptions {
      **/
     selector: Option<String>,
     /** A getter function. Must return a number representing the offset (in pixels). */
-    function: Option<js_sys::Function>,
+    //function: Option<js_sys::Function>,
     /** show vendor extensions ("x-" fields).
      * Extensions used by ReDoc are ignored. Can be an array of string with names of extensions to display.
      **/
@@ -882,17 +910,6 @@ impl RedocOptions {
         })
     }
 
-    #[wasm_bindgen(js_name = setFunction)]
-    pub fn set_function(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_option_for("set_function".to_string(), value, "function", |v| {
-            v.clone().dyn_into::<js_sys::Function>().ok()
-        })
-        .map(|val| {
-            self.function = Some(val);
-            self
-        })
-    }
-
     #[wasm_bindgen(js_name = setShowExtensions)]
     pub fn set_show_extensions(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         let mut extensions = vec![];
@@ -987,6 +1004,14 @@ impl RedocOptions {
             self
         })
     }
+
+    #[wasm_bindgen(js_name = setDocUrl)]
+    pub fn set_doc_url(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
+        parse_string_option_for("set_doc_url".to_string(), value).map(|val| {
+            self.redocTryItOut.docUrl = val;
+            self
+        })
+    }
 }
 
 impl Default for RedocOptions {
@@ -1015,7 +1040,6 @@ impl Default for RedocOptions {
             required_props_first: Option::default(),
             scroll_y_offset: Option::default(),
             selector: Option::default(),
-            function: Option::default(),
             show_extensions: Option::default(),
             sort_props_alphabetically: Option::default(),
             payload_sample_idx: Option::default(),
@@ -1044,9 +1068,33 @@ impl RedocTryItOut {
             .to_string()
             .as_str());
         self.add_script_tag(
-            "https://rebilly.github.io/ReDoc/releases/latest/redoc.min.js".to_string(),
+            format!("https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js", config.redocTryItOut.redoc_version),
         )
         .await?;
+        let callback = Closure::wrap(Box::new(move |e: JsValue| {
+            if e.is_instance_of::<js_sys::Error>() {
+                log(format!("Error: {}", e.as_string().unwrap().as_str()).as_str());
+            } else {
+                log(format!("Redoc OK").as_str());
+            }
+        }) as Box<dyn FnMut(JsValue)>);
+        let options = serde_wasm_bindgen::to_value(&config).unwrap();
+        let redoc_container = self
+            .document
+            .get_element_by_id(config.redocTryItOut.container_id.as_str())
+            .expect("should have a redoc container");
+        let callback_function = callback
+            .as_ref()
+            .unchecked_ref::<js_sys::Function>()
+            .clone();
+        initRedoc(
+            config.redocTryItOut.docUrl,
+            options,
+            redoc_container,
+            callback_function,
+        )
+        .await;
+        callback.forget();
         Ok(())
     }
 
