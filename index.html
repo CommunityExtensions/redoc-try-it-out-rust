@@ -10,7 +10,7 @@
         async function run() {
             await init();
             const redocTryItOut = new RedocTryItOut();
-            redocTryItOut.init(new RedocTryItOutOptions().setDisableSearch(true));
+            redocTryItOut.init(new RedocTryItOutOptions().setDisableSearch(true).setGeneratedPayloadSamplesMaxDepth(1.34222));
         }
 
         run();

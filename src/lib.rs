@@ -263,7 +263,7 @@ impl RedocTryItOut {
 
     pub async fn init(&self, config: RedocTryItOutOptions) -> Result<(), JsValue> {
         log(config
-            .disable_search
+            .generated_payload_samples_max_depth
             .unwrap_or_default()
             .to_string()
             .as_str());
