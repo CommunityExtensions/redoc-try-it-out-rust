@@ -5,12 +5,15 @@
 </head>
 <body>
     <script type="module">
-        import init, { RedocTryItOut, RedocTryItOutOptions } from './pkg/redoc_try_it_out_rust.js';
+        import init, { RedocTryItOut, RedocOptions } from './pkg/redoc_try_it_out_rust.js';
 
         async function run() {
             await init();
-            const options = new RedocTryItOutOptions().setDisableSearch("sdas").setGeneratedPayloadSamplesMaxDepth(1);
-            new RedocTryItOut().init(options);
+            const options = new RedocOptions()
+                .setDisableSearch(true)
+                .setGeneratedPayloadSamplesMaxDepth(1);
+            new RedocTryItOut()
+                .init(options);
         }
 
         run();
