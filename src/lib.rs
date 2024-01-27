@@ -27,8 +27,10 @@ fn set_boolean_option(value: JsValue) -> Result<bool, JsValue> {
     set_option(value, "boolean", JsValue::as_bool)
 }
 
-fn set_64_option(value: JsValue) -> Result<f64, JsValue> {
-    set_option(value, "number", JsValue::as_f64)
+fn set_u32_option(value: JsValue) -> Result<u32, JsValue> {
+    set_option(value, "number", |js_value| {
+        js_value.as_f64().map(|v| v as u32)
+    })
 }
 
 fn set_boolean_option_for(value: JsValue, mut set_value: impl FnMut(bool)) -> Result<(), JsValue> {
@@ -185,7 +187,7 @@ impl RedocTryItOutOptions {
         mut self,
         value: JsValue,
     ) -> Result<RedocTryItOutOptions, JsValue> {
-        match set_64_option(value) {
+        match set_u32_option(value) {
             Ok(val) => {
                 self.generated_payload_samples_max_depth = Some(val as u32);
                 Ok(self)
@@ -202,7 +204,7 @@ impl RedocTryItOutOptions {
         mut self,
         value: JsValue,
     ) -> Result<RedocTryItOutOptions, JsValue> {
-        match set_64_option(value) {
+        match set_u32_option(value) {
             Ok(val) => {
                 self.generated_payload_samples_max_depth = Some(val as u32);
                 Ok(self)
