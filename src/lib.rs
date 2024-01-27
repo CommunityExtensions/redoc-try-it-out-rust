@@ -32,6 +32,10 @@ fn parse_u32_option_for(key: String, value: JsValue) -> Result<u32, JsValue> {
     parse_option_for(key, value, "number", |v| v.as_f64().map(|v| v as u32))
 }
 
+fn parse_string_option_for(key: String, value: JsValue) -> Result<String, JsValue> {
+    parse_option_for(key, value, "string", JsValue::as_string)
+}
+
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -185,6 +189,246 @@ impl RedocTryItOutOptions {
             self
         })
     }
+
+    #[wasm_bindgen(js_name = setHideDownloadButton)]
+    pub fn set_hide_download_button(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_download_button".to_string(), value).map(|val| {
+            self.hide_download_button = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setHideHostname)]
+    pub fn set_hide_hostname(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_hostname".to_string(), value).map(|val| {
+            self.hide_hostname = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setHideLoading)]
+    pub fn set_hide_loading(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_loading".to_string(), value).map(|val| {
+            self.hide_loading = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setHideSchemaPattern)]
+    pub fn set_hide_schema_pattern(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_schema_pattern".to_string(), value).map(|val| {
+            self.hide_schema_pattern = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setHideSingleRequestSampleTab)]
+    pub fn set_hide_single_request_sample_tab(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_single_request_sample_tab".to_string(), value).map(
+            |val| {
+                self.hide_single_request_sample_tab = Some(val);
+                self
+            },
+        )
+    }
+
+    #[wasm_bindgen(js_name = setExpandSingleSchemaField)]
+    pub fn set_expand_single_schema_field(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_expand_single_schema_field".to_string(), value).map(|val| {
+            self.expand_single_schema_field = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setJsonSampleExpandLevel)]
+    pub fn set_json_sample_expand_level(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_u32_option_for("set_json_sample_expand_level".to_string(), value).map(|val| {
+            self.json_sample_expand_level = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setHideSchemaTitles)]
+    pub fn set_hide_schema_titles(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_hide_schema_titles".to_string(), value).map(|val| {
+            self.hide_schema_titles = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setSimpleOneOfTypeLabel)]
+    pub fn set_simple_one_of_type_label(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_simple_one_of_type_label".to_string(), value).map(|val| {
+            self.simple_one_of_type_label = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setLazyRendering)]
+    pub fn set_lazy_rendering(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_lazy_rendering".to_string(), value).map(|val| {
+            self.lazy_rendering = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setMenuToggle)]
+    pub fn set_menu_toggle(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_menu_toggle".to_string(), value).map(|val| {
+            self.menu_toggle = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setNativeScrollbars)]
+    pub fn set_native_scrollbars(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_native_scrollbars".to_string(), value).map(|val| {
+            self.native_scrollbars = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setNoAutoAuth)]
+    pub fn set_no_auto_auth(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_no_auto_auth".to_string(), value).map(|val| {
+            self.no_auto_auth = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setOnlyRequiredInSamples)]
+    pub fn set_only_required_in_samples(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_only_required_in_samples".to_string(), value).map(|val| {
+            self.only_required_in_samples = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setPathInMiddlePanel)]
+    pub fn set_path_in_middle_panel(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_path_in_middle_panel".to_string(), value).map(|val| {
+            self.path_in_middle_panel = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setRequiredPropsFirst)]
+    pub fn set_required_props_first(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_required_props_first".to_string(), value).map(|val| {
+            self.required_props_first = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setScrollYOffset)]
+    pub fn set_scroll_y_offset(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_string_option_for("set_scroll_y_offset".to_string(), value).map(|val| {
+            self.scroll_y_offset = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setSelector)]
+    pub fn set_selector(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_string_option_for("set_selector".to_string(), value).map(|val| {
+            self.selector = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setFunction)]
+    pub fn set_function(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_option_for("set_function".to_string(), value, "function", |v| {
+            v.clone().dyn_into::<js_sys::Function>().ok()
+        })
+        .map(|val| {
+            self.function = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setShowExtensions)]
+    pub fn set_show_extensions(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        let mut extensions = vec![];
+        if value.is_array() {
+            let array = js_sys::Array::from(&value);
+            for i in 0..array.length() {
+                let val = array.get(i);
+                if val.is_string() {
+                    extensions.push(val.as_string().unwrap());
+                }
+            }
+        } else {
+            return Err(JsValue::from_str(
+                "set_show_extensions only accepts array values",
+            ));
+        }
+        self.show_extensions = Some(extensions);
+        Ok(self)
+    }
+
+    #[wasm_bindgen(js_name = setSortPropsAlphabetically)]
+    pub fn set_sort_props_alphabetically(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_sort_props_alphabetically".to_string(), value).map(|val| {
+            self.sort_props_alphabetically = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setPayloadSampleIdx)]
+    pub fn set_payload_sample_idx(
+        mut self,
+        value: JsValue,
+    ) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_u32_option_for("set_payload_sample_idx".to_string(), value).map(|val| {
+            self.payload_sample_idx = Some(val);
+            self
+        })
+    }
+
+    #[wasm_bindgen(js_name = setUntrustedSpec)]
+    pub fn set_untrusted_spec(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
+        parse_boolean_option_for("set_untrusted_spec".to_string(), value).map(|val| {
+            self.untrusted_spec = Some(val);
+            self
+        })
+    }
 }
 
 impl Default for RedocTryItOutOptions {
@@ -235,7 +479,7 @@ impl RedocTryItOut {
 
     pub async fn init(&self, config: RedocTryItOutOptions) -> Result<(), JsValue> {
         log(config
-            .generated_payload_samples_max_depth
+            .disable_search
             .unwrap_or_default()
             .to_string()
             .as_str());
