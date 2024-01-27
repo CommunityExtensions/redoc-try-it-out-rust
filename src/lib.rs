@@ -47,6 +47,512 @@ pub struct RedocTryItOut {
     document: Document,
 }
 
+#[derive(Debug, Clone, PartialEq)]
+pub struct ThemOptions {
+    spacing: Option<Spacing>,
+    breakpoints: Option<Breakpoints>,
+    colors: Option<Colors>,
+    typography: Option<Typography>,
+    menu: Option<Menu>,
+    logo: Option<Logo>,
+    right_panel: Option<RightPanel>,
+}
+
+impl Default for ThemOptions {
+    fn default() -> Self {
+        Self {
+            spacing: Option::default(),
+            breakpoints: Option::default(),
+            colors: Option::default(),
+            typography: Option::default(),
+            menu: Option::default(),
+            logo: Option::default(),
+            right_panel: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Spacing {
+    pub unit: Option<u32>,
+    pub section_horizontal: Option<u32>,
+    pub section_vertical: Option<u32>,
+}
+
+impl Default for Spacing {
+    fn default() -> Self {
+        Self {
+            unit: Option::default(),
+            section_horizontal: Option::default(),
+            section_vertical: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Breakpoints {
+    pub small: Option<String>,
+    pub medium: Option<String>,
+    pub large: Option<String>,
+}
+
+impl Default for Breakpoints {
+    fn default() -> Self {
+        Self {
+            small: Option::default(),
+            medium: Option::default(),
+            large: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Colors {
+    pub tonal_offset: Option<f32>,
+}
+
+impl Default for Colors {
+    fn default() -> Self {
+        Self {
+            tonal_offset: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Typography {
+    pub font_size: Option<String>,
+    pub line_height: Option<String>,
+    pub font_weight_regular: Option<u32>,
+    pub font_weight_bold: Option<u32>,
+    pub font_weight_light: Option<u32>,
+    pub font_family: Option<String>,
+    pub smoothing: Option<String>,
+    pub optimize_speed: Option<bool>,
+    pub headings: Option<Headings>,
+    pub code: Option<Code>,
+    pub links: Option<Links>,
+}
+
+impl Default for Typography {
+    fn default() -> Self {
+        Self {
+            font_size: Option::default(),
+            line_height: Option::default(),
+            font_weight_regular: Option::default(),
+            font_weight_bold: Option::default(),
+            font_weight_light: Option::default(),
+            font_family: Option::default(),
+            smoothing: Option::default(),
+            optimize_speed: Option::default(),
+            headings: Option::default(),
+            code: Option::default(),
+            links: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Headings {
+    pub font_family: Option<String>,
+    pub font_weight: Option<u32>,
+    pub line_height: Option<String>,
+}
+
+impl Default for Headings {
+    fn default() -> Self {
+        Self {
+            font_family: Option::default(),
+            font_weight: Option::default(),
+            line_height: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Code {
+    pub font_size: Option<String>,
+    pub font_family: Option<String>,
+    pub line_height: Option<u32>,
+    pub font_weight: Option<u32>,
+    pub color: Option<String>,
+    pub background_color: Option<String>,
+    pub wrap: Option<bool>,
+}
+
+impl Default for Code {
+    fn default() -> Self {
+        Self {
+            font_size: Option::default(),
+            font_family: Option::default(),
+            line_height: Option::default(),
+            font_weight: Option::default(),
+            color: Option::default(),
+            background_color: Option::default(),
+            wrap: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Links {
+    pub color: Option<String>,
+    pub visited: Option<String>,
+    pub hover: Option<String>,
+}
+
+impl Default for Links {
+    fn default() -> Self {
+        Self {
+            color: Option::default(),
+            visited: Option::default(),
+            hover: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Menu {
+    pub width: Option<String>,
+    pub background_color: Option<String>,
+    pub text_color: Option<String>,
+    pub active_text_color: Option<String>,
+    pub group_items: Option<GroupItems>,
+    pub level1_items: Option<Level1Items>,
+    pub arrow: Option<Arrow>,
+}
+
+impl Default for Menu {
+    fn default() -> Self {
+        Self {
+            width: Option::default(),
+            background_color: Option::default(),
+            text_color: Option::default(),
+            active_text_color: Option::default(),
+            group_items: Option::default(),
+            level1_items: Option::default(),
+            arrow: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct GroupItems {
+    pub text_transform: Option<String>,
+}
+
+impl Default for GroupItems {
+    fn default() -> Self {
+        Self {
+            text_transform: Option::default(),
+        }
+    }
+}
+
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Level1Items {
+    pub text_transform: Option<String>,
+}
+
+
+impl Default for Level1Items {
+    fn default() -> Self {
+        Self {
+            text_transform: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Arrow {
+    pub size: Option<String>,
+    pub color: Option<String>,
+}
+
+impl Default for Arrow {
+    fn default() -> Self {
+        Self {
+            size: Option::default(),
+            color: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Logo {
+    pub max_height: Option<String>,
+    pub max_width: Option<String>,
+    pub gutter: Option<String>,
+}
+
+impl Default for Logo {
+    fn default() -> Self {
+        Self {
+            max_height: Option::default(),
+            max_width: Option::default(),
+            gutter: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct RightPanel {
+    pub background_color: Option<String>,
+    pub width: Option<String>,
+    pub text_color: Option<String>,
+}
+
+impl Default for RightPanel {
+    fn default() -> Self {
+        Self {
+            background_color: Option::default(),
+            width: Option::default(),
+            text_color: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct DependenciesVersions {
+    pub jquery: String,
+    pub jquery_scroll_to: String,
+}
+
+impl Default for DependenciesVersions {
+    fn default() -> Self {
+        Self {
+            jquery: "3.5.1".to_string(),
+            jquery_scroll_to: "2.1.3".to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct AuthBtnOptions {
+    pub pos_selector: Option<String>,
+    pub text: Option<String>,
+    pub class_name: Option<String>,
+}
+
+impl Default for AuthBtnOptions {
+    fn default() -> Self {
+        Self {
+            pos_selector: Option::default(),
+            text: Option::default(),
+            class_name: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct TryBtnOptions {
+    sibling_selector: Option<String>,
+    text: Option<String>,
+    class_name: Option<String>,
+    selected_class_name: Option<String>,
+}
+
+impl Default for TryBtnOptions {
+    fn default() -> Self {
+        Self {
+            sibling_selector: Option::default(),
+            text: Option::default(),
+            class_name: Option::default(),
+            selected_class_name: Option::default(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct SwaggerOptions {
+    url: Option<String>,
+    dom_id: Option<String>,
+    version: Option<String>,
+    authorize_btn_selector: Option<String>,
+    authorize_done_btn_selector: Option<String>,
+    authorize_modal_selector: Option<String>,
+    authorize_modal_close_btn_selector: Option<String>,
+    operation_section_container_selector: Option<String>,
+    operation_container_selector: Option<String>,
+    operation_summary_pattern_selector: Option<String>,
+    hide_class: Option<String>,
+    show_class: Option<String>,
+    auth_modal_class: Option<String>,
+    selected_operation_container_class: Option<String>,
+    wrapper_selector: Option<String>,
+    on_complete: Option<js_sys::Function>,
+}
+
+impl Default for SwaggerOptions {
+    fn default() -> Self {
+        Self {
+            url: Option::default(),
+            dom_id: Option::default(),
+            version: Option::default(),
+            authorize_btn_selector: Option::default(),
+            authorize_done_btn_selector: Option::default(),
+            authorize_modal_selector: Option::default(),
+            authorize_modal_close_btn_selector: Option::default(),
+            operation_section_container_selector: Option::default(),
+            operation_container_selector: Option::default(),
+            operation_summary_pattern_selector: Option::default(),
+            hide_class: Option::default(),
+            show_class: Option::default(),
+            auth_modal_class: Option::default(),
+            selected_operation_container_class: Option::default(),
+            wrapper_selector: Option::default(),
+            on_complete: Option::default(),
+        }
+    }
+}
+
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct StyleMatcherOptions {
+    information_container_target_selector: Option<String>,
+    auth_wrapper_target_selector: Option<String>,
+    models_container_target_selector: Option<String>,
+    input_target_selector: Option<String>,
+    select_target_selector: Option<String>,
+    text_area_target_selector: Option<String>,
+    paragraph_target_selector: Option<String>,
+    execute_btn_target_selector: Option<String>,
+    response_container_target_selector: Option<String>,
+    response_title_target_selector: Option<String>,
+    response_header_target_selector: Option<String>,
+    response_table_target_selector: Option<String>,
+    response_wrapper_target_selector: Option<String>,
+    response_wrapper_result_target_selector: Option<String>,
+    response_microlight_target_selector: Option<String>,
+    response_code_target_selector: Option<String>,
+    response_clipboard_target_selector: Option<String>,
+    response_clipboard_btn_target_selector: Option<String>,
+    response_curl_clipboard_target_selector: Option<String>,
+    response_download_target_selector: Option<String>,
+    server_response_header_target_selector: Option<String>,
+    server_response_status_target_selector: Option<String>,
+    server_response_description_target_selector: Option<String>,
+    server_response_sub_header_target_selector: Option<String>,
+    clear_btn_target_selector: Option<String>,
+    operation_tag_target_selector: Option<String>,
+    operation_header_container_target_selector: Option<String>,
+    operation_header_target_selector: Option<String>,
+    operation_header_decoration_target_selector: Option<String>,
+    operation_try_out_target_selector: Option<String>,
+    description_container_target_selector: Option<String>,
+    summary_target_selector: Option<String>,
+    modal_header_container_target_selector: Option<String>,
+    modal_header_target_selector: Option<String>,
+    modal_title_target_selector: Option<String>,
+    modal_title_code_target_selector: Option<String>,
+    modal_label_target_selector: Option<String>,
+    modal_code_target_selector: Option<String>,
+    modal_btn_target_selector: Option<String>,
+    parameters_table_container_target_selector: Option<String>,
+    parameters_head_target_selector: Option<String>,
+    parameter_name_field_target_selector: Option<String>,
+    parameter_type_field_target_selector: Option<String>,
+    parameter_deprecated_target_selector: Option<String>,
+    parameter_source_target_selector: Option<String>,
+    parameter_required_marker_target_selector: Option<String>,
+    parameter_required_target_selector: Option<String>,
+    api_content_source_selector: Option<String>,
+    input_source_selector: Option<String>,
+    code_source_selector: Option<String>,
+    code_box_source_selector: Option<String>,
+    data_section_source_selector: Option<String>,
+    field_source_selector: Option<String>,
+    required_field_source_selector: Option<String>,
+    field_marker_source_selector: Option<String>,
+    san_serif_font_source_selector: Option<String>,
+    alternative_monospace_font_source_selector: Option<String>,
+    alternative_sans_serif_source_selector: Option<String>,
+    h2_source_selector: Option<String>,
+    h3_source_selector: Option<String>,
+    h5_source_selector: Option<String>,
+    label_source_selector: Option<String>,
+    type_source_selector: Option<String>,
+    btn_source_selector: Option<String>,
+    default_border_color_selector: Option<String>,
+    auth_btn_source_selector: Option<String>,
+    http_verb_source_selector: Option<String>,
+}
+
+impl Default for StyleMatcherOptions {
+    fn default() -> Self {
+        Self {
+            information_container_target_selector: Option::default(),
+            auth_wrapper_target_selector: Option::default(),
+            models_container_target_selector: Option::default(),
+            input_target_selector: Option::default(),
+            select_target_selector: Option::default(),
+            text_area_target_selector: Option::default(),
+            paragraph_target_selector: Option::default(),
+            execute_btn_target_selector: Option::default(),
+            response_container_target_selector: Option::default(),
+            response_title_target_selector: Option::default(),
+            response_header_target_selector: Option::default(),
+            response_table_target_selector: Option::default(),
+            response_wrapper_target_selector: Option::default(),
+            response_wrapper_result_target_selector: Option::default(),
+            response_microlight_target_selector: Option::default(),
+            response_code_target_selector: Option::default(),
+            response_clipboard_target_selector: Option::default(),
+            response_clipboard_btn_target_selector: Option::default(),
+            response_curl_clipboard_target_selector: Option::default(),
+            response_download_target_selector: Option::default(),
+            server_response_header_target_selector: Option::default(),
+            server_response_status_target_selector: Option::default(),
+            server_response_description_target_selector: Option::default(),
+            server_response_sub_header_target_selector: Option::default(),
+            clear_btn_target_selector: Option::default(),
+            operation_tag_target_selector: Option::default(),
+            operation_header_container_target_selector: Option::default(),
+            operation_header_target_selector: Option::default(),
+            operation_header_decoration_target_selector: Option::default(),
+            operation_try_out_target_selector: Option::default(),
+            description_container_target_selector: Option::default(),
+            summary_target_selector: Option::default(),
+            modal_header_container_target_selector: Option::default(),
+            modal_header_target_selector: Option::default(),
+            modal_title_target_selector: Option::default(),
+            modal_title_code_target_selector: Option::default(),
+            modal_label_target_selector: Option::default(),
+            modal_code_target_selector: Option::default(),
+            modal_btn_target_selector: Option::default(),
+            parameters_table_container_target_selector: Option::default(),
+            parameters_head_target_selector: Option::default(),
+            parameter_name_field_target_selector: Option::default(),
+            parameter_type_field_target_selector: Option::default(),
+            parameter_deprecated_target_selector: Option::default(),
+            parameter_source_target_selector: Option::default(),
+            parameter_required_marker_target_selector: Option::default(),
+            parameter_required_target_selector: Option::default(),
+            api_content_source_selector: Option::default(),
+            input_source_selector: Option::default(),
+            code_source_selector: Option::default(),
+            code_box_source_selector: Option::default(),
+            data_section_source_selector: Option::default(),
+            field_source_selector: Option::default(),
+            required_field_source_selector: Option::default(),
+            field_marker_source_selector: Option::default(),
+            san_serif_font_source_selector: Option::default(),
+            alternative_monospace_font_source_selector: Option::default(),
+            alternative_sans_serif_source_selector: Option::default(),
+            h2_source_selector: Option::default(),
+            h3_source_selector: Option::default(),
+            h5_source_selector: Option::default(),
+            label_source_selector: Option::default(),
+            type_source_selector: Option::default(),
+            btn_source_selector: Option::default(),
+            default_border_color_selector: Option::default(),
+            auth_btn_source_selector: Option::default(),
+            http_verb_source_selector: Option::default(),
+        }
+    }
+}
+
 #[wasm_bindgen(getter_with_clone)]
 pub struct RedocTryItOutOptions {
     redoc_version: String,
@@ -55,11 +561,11 @@ pub struct RedocTryItOutOptions {
     container_id: String,
     operation_box_selector: String,
     selected_operation_class: String,
-    // dependenciesVersions: DependenciesVersions,
-    // authBtn: AuthBtnOptions,
-    // tryBtn: TryBtnOptions,
-    // swaggerOptions: SwaggerOptions,
-    // stylerMatcher: StyleMatcherOptions
+    dependencies_versions: DependenciesVersions,
+    auth_btn: AuthBtnOptions,
+    try_btn: TryBtnOptions,
+    swagger_options: SwaggerOptions,
+    styler_matcher: StyleMatcherOptions
 }
 
 impl Default for RedocTryItOutOptions {
@@ -71,6 +577,11 @@ impl Default for RedocTryItOutOptions {
             container_id: "redoc-container".to_string(),
             operation_box_selector: "[data-section-id]".to_string(),
             selected_operation_class: "try".to_string(),
+            dependencies_versions: Default::default(),
+            auth_btn: Default::default(),
+            try_btn: Default::default(),
+            swagger_options: Default::default(),
+            styler_matcher: Default::default(),
         }
     }
 }
@@ -151,7 +662,7 @@ pub struct RedocOptions {
     /** if set, payload sample will be inserted at this index or last. Indexes start from 0.*/
     payload_sample_idx: Option<u32>,
     /** ReDoc theme. For details check theme docs. */
-    // theme?: ThemOptions;
+    theme: ThemOptions,
     /** if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS.
      * Disabled by default for performance reasons. Enable this option if you work with untrusted user data!
      **/
@@ -508,6 +1019,7 @@ impl Default for RedocOptions {
             show_extensions: Option::default(),
             sort_props_alphabetically: Option::default(),
             payload_sample_idx: Option::default(),
+            theme: ThemOptions::default(),
             untrusted_spec: Option::default(),
             redocTryItOut: RedocTryItOutOptions::default(),
         }
