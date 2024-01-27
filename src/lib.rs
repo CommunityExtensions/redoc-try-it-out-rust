@@ -391,6 +391,7 @@ impl Default for TryBtnOptions {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SwaggerOptions {
     url: Option<String>,
     dom_id: Option<String>,
@@ -615,6 +616,7 @@ impl Default for RedocTryItOutOptions {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RedocOptions {
     /** disable search indexing and search box */
     disable_search: Option<bool>,

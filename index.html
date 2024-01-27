@@ -12,7 +12,8 @@
             await init();
             const options = new RedocOptions()
                 .setDisableSearch(true)
-                .setHideLoading(true);
+                .setHideLoading(true)
+                .setHideDownloadButton(true);
             new RedocTryItOut()
                 .init(options);
         }
