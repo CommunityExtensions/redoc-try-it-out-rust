@@ -2,7 +2,8 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{js_sys, window, Document, HtmlScriptElement};
 
-fn set_option<T>(
+fn parse_option_for<T>(
+    key: String,
     value: JsValue,
     type_str: &str,
     convert: impl Fn(&JsValue) -> Option<T>,
@@ -11,36 +12,24 @@ fn set_option<T>(
         match convert(&value) {
             Some(val) => Ok(val),
             None => Err(JsValue::from_str(&format!(
-                "failed to convert value to {}",
-                type_str
+                "{} failed to convert value to {}",
+                key, type_str
             ))),
         }
     } else {
         Err(JsValue::from_str(&format!(
-            "only accepts {} values",
-            type_str
+            "{} only accepts {} values",
+            key, type_str
         )))
     }
 }
 
-fn set_boolean_option(value: JsValue) -> Result<bool, JsValue> {
-    set_option(value, "boolean", JsValue::as_bool)
+fn parse_boolean_option_for(key: String, value: JsValue) -> Result<bool, JsValue> {
+    parse_option_for(key, value, "boolean", JsValue::as_bool)
 }
 
-fn set_u32_option(value: JsValue) -> Result<u32, JsValue> {
-    set_option(value, "number", |js_value| {
-        js_value.as_f64().map(|v| v as u32)
-    })
-}
-
-fn set_boolean_option_for(value: JsValue, mut set_value: impl FnMut(bool)) -> Result<(), JsValue> {
-    match set_boolean_option(value) {
-        Ok(val) => {
-            set_value(val);
-            Ok(())
-        }
-        Err(err) => Err(JsValue::from_str(&format!("{}", err.as_string().unwrap()))),
-    }
+fn parse_u32_option_for(key: String, value: JsValue) -> Result<u32, JsValue> {
+    parse_option_for(key, value, "number", |v| v.as_f64().map(|v| v as u32))
 }
 
 #[wasm_bindgen]
@@ -146,11 +135,10 @@ impl RedocTryItOutOptions {
 
     #[wasm_bindgen(js_name = setDisableSearch)]
     pub fn set_disable_search(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
-        set_boolean_option_for(value, |val| self.disable_search = Some(val))
-            .map(|_| self)
-            .map_err(|err| {
-                JsValue::from_str(&format!("set_disable_search {}", err.as_string().unwrap()))
-            })
+        parse_boolean_option_for("set_disable_search".to_string(), value).map(|val| {
+            self.disable_search = Some(val);
+            self
+        })
     }
 
     #[wasm_bindgen(js_name = setExpandDefaultServerVariables)]
@@ -158,28 +146,20 @@ impl RedocTryItOutOptions {
         mut self,
         value: JsValue,
     ) -> Result<RedocTryItOutOptions, JsValue> {
-        set_boolean_option_for(value, |val| {
-            self.expand_default_server_variables = Some(val)
-        })
-        .map(|_| self)
-        .map_err(|err| {
-            JsValue::from_str(&format!(
-                "set_expand_default_server_variables {}",
-                err.as_string().unwrap()
-            ))
-        })
+        parse_boolean_option_for("set_expand_default_server_variables".to_string(), value).map(
+            |val| {
+                self.expand_default_server_variables = Some(val);
+                self
+            },
+        )
     }
 
     #[wasm_bindgen(js_name = setExpandResponses)]
     pub fn set_expand_responses(mut self, value: JsValue) -> Result<RedocTryItOutOptions, JsValue> {
-        set_boolean_option_for(value, |val| self.expand_responses = Some(val))
-            .map(|_| self)
-            .map_err(|err| {
-                JsValue::from_str(&format!(
-                    "set_expand_responses {}",
-                    err.as_string().unwrap()
-                ))
-            })
+        parse_boolean_option_for("set_expand_responses".to_string(), value).map(|val| {
+            self.expand_responses = Some(val);
+            self
+        })
     }
 
     #[wasm_bindgen(js_name = setGeneratedPayloadSamplesMaxDepth)]
@@ -187,16 +167,12 @@ impl RedocTryItOutOptions {
         mut self,
         value: JsValue,
     ) -> Result<RedocTryItOutOptions, JsValue> {
-        match set_u32_option(value) {
-            Ok(val) => {
-                self.generated_payload_samples_max_depth = Some(val as u32);
-                Ok(self)
-            }
-            Err(err) => Err(JsValue::from_str(&format!(
-                "set_generated_payload_samples_max_depth {}",
-                err.as_string().unwrap()
-            ))),
-        }
+        parse_u32_option_for("set_generated_payload_samples_max_depth".to_string(), value).map(
+            |val| {
+                self.generated_payload_samples_max_depth = Some(val);
+                self
+            },
+        )
     }
 
     #[wasm_bindgen(js_name = setMaxDisplayedEnumValues)]
@@ -204,16 +180,10 @@ impl RedocTryItOutOptions {
         mut self,
         value: JsValue,
     ) -> Result<RedocTryItOutOptions, JsValue> {
-        match set_u32_option(value) {
-            Ok(val) => {
-                self.generated_payload_samples_max_depth = Some(val as u32);
-                Ok(self)
-            }
-            Err(err) => Err(JsValue::from_str(&format!(
-                "set_max_displayed_enum_values {}",
-                err.as_string().unwrap()
-            ))),
-        }
+        parse_u32_option_for("set_max_displayed_enum_values".to_string(), value).map(|val| {
+            self.max_displayed_enum_values = Some(val);
+            self
+        })
     }
 }
 
