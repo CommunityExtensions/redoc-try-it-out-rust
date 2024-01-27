@@ -580,7 +580,7 @@ impl Default for StyleMatcherOptions {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize)]
 pub struct RedocTryItOutOptions {
-    docUrl: String,
+    doc_url: String,
     redoc_version: String,
     try_it_out_enabled: bool,
     try_it_box_container_id: String,
@@ -597,7 +597,7 @@ pub struct RedocTryItOutOptions {
 impl Default for RedocTryItOutOptions {
     fn default() -> Self {
         Self {
-            docUrl: "https://petstore.swagger.io/v2/swagger.json".to_string(),
+            doc_url: "https://petstore.swagger.io/v2/swagger.json".to_string(),
             redoc_version: "2.1.3".to_string(),
             try_it_out_enabled: true,
             try_it_box_container_id: "try-out-wrapper".to_string(),
@@ -695,7 +695,8 @@ pub struct RedocOptions {
      * Disabled by default for performance reasons. Enable this option if you work with untrusted user data!
      **/
     untrusted_spec: Option<bool>,
-    redocTryItOut: RedocTryItOutOptions,
+    /** RedocTryItOut options */
+    _redoc_try_it_out: RedocTryItOutOptions,
 }
 
 #[wasm_bindgen]
@@ -960,7 +961,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setRedocVersion)]
     pub fn set_redoc_version(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_redoc_version".to_string(), value).map(|val| {
-            self.redocTryItOut.redoc_version = val;
+            self._redoc_try_it_out.redoc_version = val;
             self
         })
     }
@@ -968,7 +969,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setTryItOutEnabled)]
     pub fn set_try_it_out_enabled(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_boolean_option_for("set_try_it_out_enabled".to_string(), value).map(|val| {
-            self.redocTryItOut.try_it_out_enabled = val;
+            self._redoc_try_it_out.try_it_out_enabled = val;
             self
         })
     }
@@ -976,7 +977,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setTryItBoxContainerId)]
     pub fn set_try_it_box_container_id(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_try_it_box_container_id".to_string(), value).map(|val| {
-            self.redocTryItOut.try_it_box_container_id = val;
+            self._redoc_try_it_out.try_it_box_container_id = val;
             self
         })
     }
@@ -984,7 +985,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setContainerId)]
     pub fn set_container_id(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_container_id".to_string(), value).map(|val| {
-            self.redocTryItOut.container_id = val;
+            self._redoc_try_it_out.container_id = val;
             self
         })
     }
@@ -992,7 +993,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setOperationBoxSelector)]
     pub fn set_operation_box_selector(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_operation_box_selector".to_string(), value).map(|val| {
-            self.redocTryItOut.operation_box_selector = val;
+            self._redoc_try_it_out.operation_box_selector = val;
             self
         })
     }
@@ -1000,7 +1001,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setSelectedOperationClass)]
     pub fn set_selected_operation_class(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_selected_operation_class".to_string(), value).map(|val| {
-            self.redocTryItOut.selected_operation_class = val;
+            self._redoc_try_it_out.selected_operation_class = val;
             self
         })
     }
@@ -1008,7 +1009,7 @@ impl RedocOptions {
     #[wasm_bindgen(js_name = setDocUrl)]
     pub fn set_doc_url(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
         parse_string_option_for("set_doc_url".to_string(), value).map(|val| {
-            self.redocTryItOut.docUrl = val;
+            self._redoc_try_it_out.doc_url = val;
             self
         })
     }
@@ -1045,7 +1046,7 @@ impl Default for RedocOptions {
             payload_sample_idx: Option::default(),
             theme: ThemOptions::default(),
             untrusted_spec: Option::default(),
-            redocTryItOut: RedocTryItOutOptions::default(),
+            _redoc_try_it_out: RedocTryItOutOptions::default(),
         }
     }
 }
@@ -1068,7 +1069,7 @@ impl RedocTryItOut {
             .to_string()
             .as_str());
         self.add_script_tag(
-            format!("https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js", config.redocTryItOut.redoc_version),
+            format!("https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js", config._redoc_try_it_out.redoc_version),
         )
         .await?;
         let callback = Closure::wrap(Box::new(move |e: JsValue| {
@@ -1081,14 +1082,14 @@ impl RedocTryItOut {
         let options = serde_wasm_bindgen::to_value(&config).unwrap();
         let redoc_container = self
             .document
-            .get_element_by_id(config.redocTryItOut.container_id.as_str())
+            .get_element_by_id(config._redoc_try_it_out.container_id.as_str())
             .expect("should have a redoc container");
         let callback_function = callback
             .as_ref()
             .unchecked_ref::<js_sys::Function>()
             .clone();
         initRedoc(
-            config.redocTryItOut.docUrl,
+            config._redoc_try_it_out.doc_url,
             options,
             redoc_container,
             callback_function,
