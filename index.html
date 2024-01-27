@@ -12,7 +12,7 @@
             await init();
             const options = new RedocOptions()
                 .setDisableSearch(true)
-                .setGeneratedPayloadSamplesMaxDepth(1);
+                .setHideLoading(true);
             new RedocTryItOut()
                 .init(options);
         }

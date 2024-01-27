@@ -44,12 +44,12 @@ extern "C" {
     fn log(s: &str);
 
     #[wasm_bindgen(js_name = init, js_namespace = Redoc)]
-    async fn initRedoc(
+    fn initRedoc(
         docUrl: String,
         options: JsValue,
         element: Element,
-        callback: js_sys::Function,
-    );
+        callback: &js_sys::Function,
+    ) -> JsValue;
 }
 
 #[wasm_bindgen]
@@ -64,7 +64,7 @@ pub struct ThemOptions {
     breakpoints: Breakpoints,
     colors: Colors,
     typography: Typography,
-    menu: Menu,
+    sidebar: Menu,
     logo: Logo,
     right_panel: RightPanel,
 }
@@ -76,7 +76,7 @@ impl Default for ThemOptions {
             breakpoints: Default::default(),
             colors: Default::default(),
             typography: Default::default(),
-            menu: Default::default(),
+            sidebar: Default::default(),
             logo: Default::default(),
             right_panel: Default::default(),
         }
@@ -1063,39 +1063,37 @@ impl RedocTryItOut {
     }
 
     pub async fn init(&self, config: RedocOptions) -> Result<(), JsValue> {
-        log(config
-            .disable_search
-            .unwrap_or_default()
-            .to_string()
-            .as_str());
-        self.add_script_tag(
-            format!("https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js", config._redoc_try_it_out.redoc_version),
-        )
+        self.add_script_tag(format!(
+            "https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js",
+            config._redoc_try_it_out.redoc_version
+        ))
         .await?;
-        let callback = Closure::wrap(Box::new(move |e: JsValue| {
-            if e.is_instance_of::<js_sys::Error>() {
-                log(format!("Error: {}", e.as_string().unwrap().as_str()).as_str());
-            } else {
-                log(format!("Redoc OK").as_str());
-            }
-        }) as Box<dyn FnMut(JsValue)>);
         let options = serde_wasm_bindgen::to_value(&config).unwrap();
         let redoc_container = self
             .document
             .get_element_by_id(config._redoc_try_it_out.container_id.as_str())
-            .expect("should have a redoc container");
-        let callback_function = callback
-            .as_ref()
-            .unchecked_ref::<js_sys::Function>()
-            .clone();
-        initRedoc(
-            config._redoc_try_it_out.doc_url,
-            options,
-            redoc_container,
-            callback_function,
-        )
-        .await;
-        callback.forget();
+            .ok_or_else(|| JsValue::from_str("should have a redoc container"))?;
+        let doc_url = config._redoc_try_it_out.doc_url;
+        let init_promise = js_sys::Promise::new(&mut move |resolve, reject| {
+            let init_callback = Closure::wrap(Box::new(move |err: JsValue| {
+                if err.is_undefined() {
+                    resolve.call0(&JsValue::NULL).unwrap();
+                } else {
+                    reject.call1(&JsValue::NULL, &err).unwrap();
+                }
+            }) as Box<dyn FnMut(JsValue)>);
+
+            initRedoc(
+                doc_url.clone(),
+                options.clone(),
+                redoc_container.clone(),
+                init_callback.as_ref().unchecked_ref(),
+            );
+
+            init_callback.forget();
+        });
+
+        JsFuture::from(init_promise).await?;
         Ok(())
     }
 
@@ -1127,7 +1125,10 @@ impl RedocTryItOut {
         });
 
         // Append the script to the body
-        let body = self.document.body().expect("document should have a body");
+        let body = self
+            .document
+            .body()
+            .ok_or_else(|| JsValue::from_str("should have a body"))?;
         body.append_child(&script)?;
 
         // Wait for the script to load
