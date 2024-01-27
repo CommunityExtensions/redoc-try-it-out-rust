@@ -10,9 +10,7 @@
         async function run() {
             await init();
             const redocTryItOut = new RedocTryItOut();
-            const options = new RedocTryItOutOptions();
-            options.option1 = "value1";
-            redocTryItOut.init(options);
+            redocTryItOut.init(new RedocTryItOutOptions().setDisableSearch(true));
         }
 
         run();
