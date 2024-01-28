@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Hello World in Rust and WASM</title>
-</head>
 <body>
     <div id="redoc-container"></div>
     <script type="module">
@@ -10,11 +7,14 @@
 
         async function run() {
             await init();
-            new RedocTryItOut().init({
-                docUrl: "https://petstore.swagger.io/v2/swagger.json"
-            }, {
-                disableSearch: true,
-            });
+            new RedocTryItOut().init(
+                "https://petstore.swagger.io/v2/swagger.json",
+                {
+                    disableSearch: true,
+                    hideDownloadButton: true
+                },
+                document.getElementById("redoc-container")
+            )
         }
 
         run();
