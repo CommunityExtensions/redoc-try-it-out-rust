@@ -2,8 +2,8 @@ use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
-pub struct ThemOptions {
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct ThemeOptions {
     #[serde(default = "Spacing::default")]
     spacing: Spacing,
     #[serde(default = "Breakpoints::default")]
@@ -20,7 +20,7 @@ pub struct ThemOptions {
     right_panel: RightPanel,
 }
 
-impl Default for ThemOptions {
+impl Default for ThemeOptions {
     fn default() -> Self {
         Self {
             spacing: Default::default(),
@@ -35,7 +35,7 @@ impl Default for ThemOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Spacing {
     unit: Option<u32>,
     section_horizontal: Option<u32>,
@@ -53,7 +53,7 @@ impl Default for Spacing {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Breakpoints {
     small: Option<String>,
     medium: Option<String>,
@@ -71,7 +71,7 @@ impl Default for Breakpoints {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Colors {
     tonal_offset: Option<f32>,
 }
@@ -85,7 +85,7 @@ impl Default for Colors {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Typography {
     font_size: Option<String>,
     line_height: Option<String>,
@@ -119,7 +119,7 @@ impl Default for Typography {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Headings {
     font_family: Option<String>,
     font_weight: Option<u32>,
@@ -137,7 +137,7 @@ impl Default for Headings {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Code {
     font_size: Option<String>,
     font_family: Option<String>,
@@ -163,7 +163,7 @@ impl Default for Code {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Links {
     color: String,
     visited: String,
@@ -181,7 +181,7 @@ impl Default for Links {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Menu {
     width: Option<String>,
     background_color: Option<String>,
@@ -207,7 +207,7 @@ impl Default for Menu {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct GroupItems {
     text_transform: Option<String>,
 }
@@ -221,7 +221,7 @@ impl Default for GroupItems {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Level1Items {
     text_transform: Option<String>,
 }
@@ -235,7 +235,7 @@ impl Default for Level1Items {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Arrow {
     size: Option<String>,
     color: Option<String>,
@@ -251,7 +251,7 @@ impl Default for Arrow {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Logo {
     max_height: Option<String>,
     max_width: Option<String>,
@@ -269,7 +269,7 @@ impl Default for Logo {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct RightPanel {
     background_color: Option<String>,
     width: Option<String>,

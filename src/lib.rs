@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{js_sys, window, Document, Element, HtmlScriptElement};
-use redoc_theme::ThemOptions;
+use redoc_theme::ThemeOptions;
 
 #[wasm_bindgen]
 extern "C" {
@@ -130,7 +130,7 @@ pub struct RedocTryItOutOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct RedocOptions {
     /** disable search indexing and search box */
@@ -207,7 +207,7 @@ pub struct RedocOptions {
     /** if set, payload sample will be inserted at this index or last. Indexes start from 0.*/
     payload_sample_idx: Option<u32>,
     /** ReDoc theme. For details check theme docs. */
-    theme: Option<ThemOptions>,
+    theme: Option<ThemeOptions>,
     /** if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS.
      * Disabled by default for performance reasons. Enable this option if you work with untrusted user data!
      **/
