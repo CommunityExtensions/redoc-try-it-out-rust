@@ -4,12 +4,19 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct ThemOptions {
+    #[serde(default = "Spacing::default")]
     spacing: Spacing,
+    #[serde(default = "Breakpoints::default")]
     breakpoints: Breakpoints,
+    #[serde(default = "Colors::default")]
     colors: Colors,
+    #[serde(default = "Typography::default")]
     typography: Typography,
+    #[serde(default = "Menu::default")]
     sidebar: Menu,
+    #[serde(default = "Logo::default")]
     logo: Logo,
+    #[serde(default = "RightPanel::default")]
     right_panel: RightPanel,
 }
 

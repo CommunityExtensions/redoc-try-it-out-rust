@@ -17,7 +17,7 @@ extern "C" {
         options: JsValue,
         element: Element,
         callback: &js_sys::Function,
-    ) -> JsValue;
+    );
 }
 
 #[wasm_bindgen]
@@ -80,36 +80,53 @@ impl Default for TryBtnOptions {
     }
 }
 
-#[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct RedocTryItOutOptions {
-    doc_url: String,
-    redoc_version: String,
-    try_it_out_enabled: bool,
-    try_it_box_container_id: String,
-    container_id: String,
-    operation_box_selector: String,
-    selected_operation_class: String,
-    dependencies_versions: DependenciesVersions,
-    auth_btn: AuthBtnOptions,
-    try_btn: TryBtnOptions,
+fn try_it_out_enabled_default() -> bool {
+    true
 }
 
-impl Default for RedocTryItOutOptions {
-    fn default() -> Self {
-        Self {
-            doc_url: "https://petstore.swagger.io/v2/swagger.json".to_string(),
-            redoc_version: "2.1.3".to_string(),
-            try_it_out_enabled: true,
-            try_it_box_container_id: "try-out-wrapper".to_string(),
-            container_id: "redoc-container".to_string(),
-            operation_box_selector: "[data-section-id]".to_string(),
-            selected_operation_class: "try".to_string(),
-            dependencies_versions: Default::default(),
-            auth_btn: Default::default(),
-            try_btn: Default::default(),
-        }
-    }
+fn redoc_version_default() -> String {
+    "2.1.3".to_string()
+}
+
+fn try_it_box_container_id_default() -> String {
+    "try-out-wrapper".to_string()
+}
+
+fn container_id_default() -> String {
+    "redoc-container".to_string()
+}
+
+fn operation_box_selector_default() -> String {
+    "[data-section-id]".to_string()
+}
+
+fn selected_operation_class_default() -> String {
+    "try".to_string()
+}
+
+#[wasm_bindgen(getter_with_clone)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct RedocTryItOutOptions {
+    doc_url: String,
+    #[serde(default = "redoc_version_default")]
+    redoc_version: String,
+    #[serde(default = "try_it_out_enabled_default")]
+    try_it_out_enabled: bool,
+    #[serde(default = "try_it_box_container_id_default")]
+    try_it_box_container_id: String,
+    #[serde(default = "container_id_default")]
+    container_id: String,
+    #[serde(default = "operation_box_selector_default")]
+    operation_box_selector: String,
+    #[serde(default = "selected_operation_class_default")]
+    selected_operation_class: String,
+    #[serde(default)]
+    dependencies_versions: DependenciesVersions,
+    #[serde(default)]
+    auth_btn: AuthBtnOptions,
+    #[serde(default)]
+    try_btn: TryBtnOptions,
 }
 
 #[wasm_bindgen(getter_with_clone)]
@@ -190,15 +207,11 @@ pub struct RedocOptions {
     /** if set, payload sample will be inserted at this index or last. Indexes start from 0.*/
     payload_sample_idx: Option<u32>,
     /** ReDoc theme. For details check theme docs. */
-    #[serde(default)]
     theme: Option<ThemOptions>,
     /** if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS.
      * Disabled by default for performance reasons. Enable this option if you work with untrusted user data!
      **/
     untrusted_spec: Option<bool>,
-    /** RedocTryItOut options */
-    #[serde(default = "RedocTryItOutOptions::default")]
-    pub redoc_try_it_out: RedocTryItOutOptions,
 }
 
 #[wasm_bindgen]
@@ -212,21 +225,23 @@ impl RedocTryItOut {
         Ok(RedocTryItOut { document })
     }
 
-    pub async fn init(&self, config: JsValue) -> Result<(), JsValue> {
-        let config: RedocOptions = serde_wasm_bindgen::from_value(config)
+    pub async fn init(&self, config: JsValue, redoc_config: JsValue) -> Result<(), JsValue> {
+        let config: RedocTryItOutOptions = serde_wasm_bindgen::from_value(config)
             .map_err(|e| JsValue::from_str(&format!("Failed to parse config: {:?}", e)))?;
         log(&format!("config: {:?}", config));
+        let redoc_config: RedocOptions = serde_wasm_bindgen::from_value(redoc_config)
+            .map_err(|e| JsValue::from_str(&format!("Failed to parse redoc config: {:?}", e)))?;
+        log(&format!("redoc_config: {:?}", redoc_config));
         self.add_script_tag(format!(
             "https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js",
-            config.redoc_try_it_out.redoc_version
+            config.redoc_version
         ))
         .await?;
-        let options = serde_wasm_bindgen::to_value(&config).unwrap();
         let redoc_container = self
             .document
-            .get_element_by_id(config.redoc_try_it_out.container_id.as_str())
+            .get_element_by_id(config.container_id.as_str())
             .ok_or_else(|| JsValue::from_str("should have a redoc container"))?;
-        let doc_url = &config.redoc_try_it_out.doc_url;
+        let doc_url = &config.doc_url;
         let init_promise = js_sys::Promise::new(&mut move |resolve, reject| {
             let init_callback = Closure::wrap(Box::new(move |err: JsValue| {
                 if err.is_undefined() {
@@ -235,6 +250,8 @@ impl RedocTryItOut {
                     reject.call1(&JsValue::NULL, &err).unwrap();
                 }
             }) as Box<dyn FnMut(JsValue)>);
+
+            let options = serde_wasm_bindgen::to_value(&redoc_config).unwrap();
 
             initRedoc(
                 doc_url.clone(),
