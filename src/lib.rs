@@ -1,5 +1,5 @@
-mod redoc_theme;
-use redoc_theme::ThemeOptions;
+mod theme;
+use theme::ThemeOptions;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;

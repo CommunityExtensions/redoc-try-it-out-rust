@@ -11,11 +11,84 @@
                 "https://petstore.swagger.io/v2/swagger.json",
                 {
                     disableSearch: true,
-                    hideDownloadButton: true
+                    hideDownloadButton: true,
+                    // theme: CUSTOM_REDOC_THEME, // uncomment to use custom theme (will look very funny)
                 },
                 document.getElementById("redoc-container")
             )
         }
+
+
+        const CUSTOM_REDOC_THEME = {
+            "spacing": {
+                "unit": 8,
+                "sectionHorizontal": 16,
+                "sectionVertical": 16
+            },
+            "breakpoints": {
+                "small": "40em",
+                "medium": "52em",
+                "large": "64em"
+            },
+            "colors": {
+                "tonalOffset": 0.2
+            },
+            "typography": {
+                "fontSize": "16px",
+                "lineHeight": "1.5",
+                "fontWeightRegular": 400,
+                "fontWeightBold": 700,
+                "fontWeightLight": 300,
+                "fontFamily": "sans-serif",
+                "smoothing": "antialiased",
+                "optimizeSpeed": true,
+                "headings": {
+                    "fontFamily": "sans-serif",
+                    "fontWeight": 700,
+                    "lineHeight": "1.2"
+                },
+                "code": {
+                    "fontSize": "40px",
+                    "fontFamily": "monospace",
+                    "lineHeight": 1,
+                    "fontWeight": 400,
+                    "color": "#c41a16",
+                    "backgroundColor": "#f5f2f0",
+                    "wrap": true
+                },
+                "links": {
+                    "color": "#c41a16",
+                    "visited": "#c41a16",
+                    "hover": "#c41a16"
+                }
+            },
+            "sidebar": {
+                "width": "280px",
+                "backgroundColor": "#fafafa",
+                "textColor": "#333333",
+                "activeTextColor": "#c41a16",
+                "groupItems": {
+                    "textTransform": "uppercase"
+                },
+                "level1Items": {
+                    "textTransform": "uppercase"
+                },
+                "arrow": {
+                    "size": "1rem",
+                    "color": "#c41a00"
+                }
+            },
+            "logo": {
+                "maxHeight": "1.5rem",
+                "maxWidth": "1.5rem",
+                "gutter": "0.5rem"
+            },
+            "rightPanel": {
+                "backgroundColor": "#fafafa",
+                "width": "40%",
+                "textColor": "#333333"
+            }
+        };
 
         run();
     </script>

@@ -3,6 +3,7 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct ThemeOptions {
     spacing: Option<Spacing>,
     breakpoints: Option<Breakpoints>,
@@ -15,7 +16,8 @@ pub struct ThemeOptions {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Spacing {
+#[serde(rename_all = "camelCase")]
+struct Spacing {
     unit: Option<u32>,
     section_horizontal: Option<u32>,
     section_vertical: Option<u32>,
@@ -23,7 +25,8 @@ pub struct Spacing {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Breakpoints {
+#[serde(rename_all = "camelCase")]
+struct Breakpoints {
     small: Option<String>,
     medium: Option<String>,
     large: Option<String>,
@@ -31,13 +34,15 @@ pub struct Breakpoints {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Colors {
+#[serde(rename_all = "camelCase")]
+struct Colors {
     tonal_offset: Option<f32>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Typography {
+#[serde(rename_all = "camelCase")]
+struct Typography {
     font_size: Option<String>,
     line_height: Option<String>,
     font_weight_regular: Option<u32>,
@@ -53,7 +58,8 @@ pub struct Typography {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Headings {
+#[serde(rename_all = "camelCase")]
+struct Headings {
     font_family: Option<String>,
     font_weight: Option<u32>,
     line_height: Option<String>,
@@ -61,7 +67,8 @@ pub struct Headings {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Code {
+#[serde(rename_all = "camelCase")]
+struct Code {
     font_size: Option<String>,
     font_family: Option<String>,
     line_height: Option<u32>,
@@ -73,7 +80,8 @@ pub struct Code {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Links {
+#[serde(rename_all = "camelCase")]
+struct Links {
     color: Option<String>,
     visited: Option<String>,
     hover: Option<String>,
@@ -81,7 +89,8 @@ pub struct Links {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Menu {
+#[serde(rename_all = "camelCase")]
+struct Menu {
     width: Option<String>,
     background_color: Option<String>,
     text_color: Option<String>,
@@ -93,26 +102,30 @@ pub struct Menu {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct GroupItems {
+#[serde(rename_all = "camelCase")]
+struct GroupItems {
     text_transform: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Level1Items {
+#[serde(rename_all = "camelCase")]
+struct Level1Items {
     text_transform: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Arrow {
+#[serde(rename_all = "camelCase")]
+struct Arrow {
     size: Option<String>,
     color: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct Logo {
+#[serde(rename_all = "camelCase")]
+struct Logo {
     max_height: Option<String>,
     max_width: Option<String>,
     gutter: Option<String>,
@@ -120,7 +133,8 @@ pub struct Logo {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
-pub struct RightPanel {
+#[serde(rename_all = "camelCase")]
+struct RightPanel {
     background_color: Option<String>,
     width: Option<String>,
     text_color: Option<String>,
