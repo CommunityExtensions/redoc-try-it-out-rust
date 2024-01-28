@@ -30,9 +30,9 @@ impl Default for ThemOptions {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Spacing {
-    pub unit: Option<u32>,
-    pub section_horizontal: Option<u32>,
-    pub section_vertical: Option<u32>,
+    unit: Option<u32>,
+    section_horizontal: Option<u32>,
+    section_vertical: Option<u32>,
 }
 
 impl Default for Spacing {
@@ -48,9 +48,9 @@ impl Default for Spacing {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Breakpoints {
-    pub small: Option<String>,
-    pub medium: Option<String>,
-    pub large: Option<String>,
+    small: Option<String>,
+    medium: Option<String>,
+    large: Option<String>,
 }
 
 impl Default for Breakpoints {
@@ -66,7 +66,7 @@ impl Default for Breakpoints {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Colors {
-    pub tonal_offset: Option<f32>,
+    tonal_offset: Option<f32>,
 }
 
 impl Default for Colors {
@@ -80,17 +80,17 @@ impl Default for Colors {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Typography {
-    pub font_size: Option<String>,
-    pub line_height: Option<String>,
-    pub font_weight_regular: Option<u32>,
-    pub font_weight_bold: Option<u32>,
-    pub font_weight_light: Option<u32>,
-    pub font_family: Option<String>,
-    pub smoothing: Option<String>,
-    pub optimize_speed: Option<bool>,
-    pub headings: Headings,
-    pub code: Code,
-    pub links: Links,
+    font_size: Option<String>,
+    line_height: Option<String>,
+    font_weight_regular: Option<u32>,
+    font_weight_bold: Option<u32>,
+    font_weight_light: Option<u32>,
+    font_family: Option<String>,
+    smoothing: Option<String>,
+    optimize_speed: Option<bool>,
+    headings: Headings,
+    code: Code,
+    links: Links,
 }
 
 impl Default for Typography {
@@ -114,9 +114,9 @@ impl Default for Typography {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Headings {
-    pub font_family: Option<String>,
-    pub font_weight: Option<u32>,
-    pub line_height: Option<String>,
+    font_family: Option<String>,
+    font_weight: Option<u32>,
+    line_height: Option<String>,
 }
 
 impl Default for Headings {
@@ -132,13 +132,13 @@ impl Default for Headings {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Code {
-    pub font_size: Option<String>,
-    pub font_family: Option<String>,
-    pub line_height: Option<u32>,
-    pub font_weight: Option<u32>,
-    pub color: Option<String>,
-    pub background_color: Option<String>,
-    pub wrap: Option<bool>,
+    font_size: Option<String>,
+    font_family: Option<String>,
+    line_height: Option<u32>,
+    font_weight: Option<u32>,
+    color: Option<String>,
+    background_color: Option<String>,
+    wrap: Option<bool>,
 }
 
 impl Default for Code {
@@ -158,9 +158,9 @@ impl Default for Code {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Links {
-    pub color: String,
-    pub visited: String,
-    pub hover: String,
+    color: String,
+    visited: String,
+    hover: String,
 }
 
 impl Default for Links {
@@ -176,13 +176,13 @@ impl Default for Links {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Menu {
-    pub width: Option<String>,
-    pub background_color: Option<String>,
-    pub text_color: Option<String>,
-    pub active_text_color: Option<String>,
-    pub group_items: Option<GroupItems>,
-    pub level1_items: Option<Level1Items>,
-    pub arrow: Arrow,
+    width: Option<String>,
+    background_color: Option<String>,
+    text_color: Option<String>,
+    active_text_color: Option<String>,
+    group_items: Option<GroupItems>,
+    level1_items: Option<Level1Items>,
+    arrow: Arrow,
 }
 
 impl Default for Menu {
@@ -202,7 +202,7 @@ impl Default for Menu {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct GroupItems {
-    pub text_transform: Option<String>,
+    text_transform: Option<String>,
 }
 
 impl Default for GroupItems {
@@ -216,7 +216,7 @@ impl Default for GroupItems {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Level1Items {
-    pub text_transform: Option<String>,
+    text_transform: Option<String>,
 }
 
 impl Default for Level1Items {
@@ -230,8 +230,8 @@ impl Default for Level1Items {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Clone, Deserialize, Serialize, Debug)]
 pub struct Arrow {
-    pub size: Option<String>,
-    pub color: Option<String>,
+    size: Option<String>,
+    color: Option<String>,
 }
 
 impl Default for Arrow {
@@ -246,9 +246,9 @@ impl Default for Arrow {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Logo {
-    pub max_height: Option<String>,
-    pub max_width: Option<String>,
-    pub gutter: Option<String>,
+    max_height: Option<String>,
+    max_width: Option<String>,
+    gutter: Option<String>,
 }
 
 impl Default for Logo {
@@ -264,9 +264,9 @@ impl Default for Logo {
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug)]
 pub struct RightPanel {
-    pub background_color: Option<String>,
-    pub width: Option<String>,
-    pub text_color: Option<String>,
+    background_color: Option<String>,
+    width: Option<String>,
+    text_color: Option<String>,
 }
 
 impl Default for RightPanel {
