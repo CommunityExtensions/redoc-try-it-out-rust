@@ -1,6 +1,6 @@
 mod theme;
-use theme::ThemeOptions;
 use serde::{Deserialize, Serialize};
+use theme::ThemeOptions;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
@@ -21,7 +21,7 @@ pub struct RedocTryItOut {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct DependenciesVersions {
     pub jquery: String,
@@ -38,7 +38,7 @@ impl Default for DependenciesVersions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthBtnOptions {
     pub pos_selector: Option<String>,
@@ -57,7 +57,7 @@ impl Default for AuthBtnOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct TryBtnOptions {
     sibling_selector: Option<String>,
@@ -102,7 +102,7 @@ fn selected_operation_class_default() -> String {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct RedocTryItOutOptions {
     #[serde(default = "redoc_version_default")]
@@ -126,7 +126,7 @@ pub struct RedocTryItOutOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct RedocOptions {
     /** disable search indexing and search box */
@@ -310,5 +310,229 @@ impl RedocTryItOut {
         JsFuture::from(promise).await?;
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_wasm_bindgen::{from_value, to_value};
+    use wasm_bindgen_test::*;
+
+    #[wasm_bindgen_test]
+    fn test_auth_btn_options() {
+        let auth_btn_options: AuthBtnOptions = AuthBtnOptions {
+            pos_selector: Some("selector".to_string()),
+            text: Some("text".to_string()),
+            class_name: Some("class".to_string()),
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&auth_btn_options).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: AuthBtnOptions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(auth_btn_options, deserialized);
+    }
+
+    #[wasm_bindgen_test]
+    fn test_try_btn_options() {
+        let try_btn_options: TryBtnOptions = TryBtnOptions {
+            sibling_selector: Some("selector".to_string()),
+            text: Some("text".to_string()),
+            class_name: Some("class".to_string()),
+            selected_class_name: Some("selected_class".to_string()),
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&try_btn_options).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: TryBtnOptions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(try_btn_options, deserialized);
+    }
+
+    #[wasm_bindgen_test]
+    fn test_dependencies_versions() {
+        let dependencies_versions: DependenciesVersions = DependenciesVersions {
+            jquery: "3.5.1".to_string(),
+            jquery_scroll_to: "2.1.3".to_string(),
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&dependencies_versions).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: DependenciesVersions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(dependencies_versions, deserialized);
+    }
+
+    #[wasm_bindgen_test]
+    fn test_redoc_try_it_out_options() {
+        let redoc_try_it_out_options: RedocTryItOutOptions = RedocTryItOutOptions {
+            redoc_version: "2.1.3".to_string(),
+            try_it_out_enabled: true,
+            try_it_box_container_id: "try-out-wrapper".to_string(),
+            container_id: "redoc-container".to_string(),
+            operation_box_selector: "[data-section-id]".to_string(),
+            selected_operation_class: "try".to_string(),
+            dependencies_versions: DependenciesVersions {
+                jquery: "3.5.1".to_string(),
+                jquery_scroll_to: "2.1.3".to_string(),
+            },
+            auth_btn: AuthBtnOptions {
+                pos_selector: Some("selector".to_string()),
+                text: Some("text".to_string()),
+                class_name: Some("class".to_string()),
+            },
+            try_btn: TryBtnOptions {
+                sibling_selector: Some("selector".to_string()),
+                text: Some("text".to_string()),
+                class_name: Some("class".to_string()),
+                selected_class_name: Some("selected_class".to_string()),
+            },
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&redoc_try_it_out_options).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: RedocTryItOutOptions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(redoc_try_it_out_options, deserialized);
+    }
+
+    #[wasm_bindgen_test]
+    fn test_redoc_options() {
+        let redoc_options: RedocOptions = RedocOptions {
+            disable_search: Some(true),
+            expand_default_server_variables: Some(true),
+            expand_responses: Some(true),
+            generated_payload_samples_max_depth: Some(10),
+            max_displayed_enum_values: Some(10),
+            hide_download_button: Some(true),
+            hide_hostname: Some(true),
+            hide_loading: Some(true),
+            hide_schema_pattern: Some(true),
+            hide_single_request_sample_tab: Some(true),
+            expand_single_schema_field: Some(true),
+            json_sample_expand_level: Some(10),
+            hide_schema_titles: Some(true),
+            simple_one_of_type_label: Some(true),
+            lazy_rendering: Some(true),
+            menu_toggle: Some(true),
+            native_scrollbars: Some(true),
+            no_auto_auth: Some(true),
+            only_required_in_samples: Some(true),
+            path_in_middle_panel: Some(true),
+            required_props_first: Some(true),
+            scroll_y_offset: Some("10".to_string()),
+            selector: Some("10".to_string()),
+            //function: Some(js_sys::Function::new_no_args(&mut || {})),
+            show_extensions: Some(vec!["x-".to_string()]),
+            sort_props_alphabetically: Some(true),
+            payload_sample_idx: Some(10),
+            theme: None,
+            untrusted_spec: Some(true),
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&redoc_options).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: RedocOptions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(redoc_options, deserialized);
+    }
+
+    #[wasm_bindgen_test]
+    fn test_theme_options() {
+        let theme_options: ThemeOptions = ThemeOptions {
+            spacing: Some(theme::Spacing {
+                unit: Some(10),
+                section_horizontal: Some(10),
+                section_vertical: Some(10),
+            }),
+            breakpoints: Some(theme::Breakpoints {
+                small: Some("10".to_string()),
+                medium: Some("10".to_string()),
+                large: Some("10".to_string()),
+            }),
+            colors: Some(theme::Colors {
+                tonal_offset: Some(10.0),
+            }),
+            typography: Some(theme::Typography {
+                font_size: Some("10".to_string()),
+                line_height: Some("10".to_string()),
+                font_weight_regular: Some(10),
+                font_weight_bold: Some(10),
+                font_weight_light: Some(10),
+                font_family: Some("10".to_string()),
+                smoothing: Some("10".to_string()),
+                optimize_speed: Some(true),
+                headings: Some(theme::Headings {
+                    font_family: Some("10".to_string()),
+                    font_weight: Some(10),
+                    line_height: Some("10".to_string()),
+                }),
+                code: Some(theme::Code {
+                    font_size: Some("10".to_string()),
+                    font_family: Some("10".to_string()),
+                    line_height: Some(1),
+                    font_weight: Some(10),
+                    color: Some("10".to_string()),
+                    background_color: Some("10".to_string()),
+                    wrap: Some(true),
+                }),
+                links: Some(theme::Links {
+                    color: Some("10".to_string()),
+                    visited: Some("10".to_string()),
+                    hover: Some("10".to_string()),
+                }),
+            }),
+            right_panel: Some(theme::RightPanel {
+                background_color: Some("10".to_string()),
+                width: Some("10".to_string()),
+                text_color: Some("10".to_string()),
+            }),
+            logo: Some(theme::Logo {
+                gutter: Some("10".to_string()),
+                max_height: Some("10".to_string()),
+                max_width: Some("10".to_string()),
+            }),
+            sidebar: Some(theme::Menu {
+                width: Some("10".to_string()),
+                background_color: Some("10".to_string()),
+                text_color: Some("10".to_string()),
+                active_text_color: Some("10".to_string()),
+                group_items: Some(theme::GroupItems{
+                    text_transform: Some("10".to_string()),
+                }),
+                level1_items: Some(theme::Level1Items{
+                    text_transform: Some("10".to_string()),
+                }),
+                arrow: Some(theme::Arrow{
+                    size: Some("10".to_string()),
+                    color: Some("10".to_string()),
+                })
+            }),
+        };
+
+        // Serialize the struct to a JsValue
+        let js_value = to_value(&theme_options).unwrap();
+
+        // Deserialize the JsValue back into a struct
+        let deserialized: ThemeOptions = from_value(js_value).unwrap();
+
+        // Check that the original struct and the deserialized struct are the same
+        assert_eq!(theme_options, deserialized);
     }
 }
