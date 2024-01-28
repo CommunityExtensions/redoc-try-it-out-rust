@@ -1,5 +1,7 @@
 # Redoc Try It Out
 
+![main](https://github.com/CommunityExtensions/redoc-try-it-out-rust/actions/workflows/rust.yml/badge.svg?branch=main)
+
 wasm-pack build --target web
 
 python3 -m http.server 
