@@ -10,12 +10,11 @@
 
         async function run() {
             await init();
-            const options = new RedocOptions()
-                .setDisableSearch(true)
-                .setHideLoading(true)
-                .setHideDownloadButton(true);
-            new RedocTryItOut()
-                .init(options);
+            new RedocTryItOut().init({
+                hideLoading: true,
+                hideDownloadButton: true,
+                disableSearch: true
+            });
         }
 
         run();

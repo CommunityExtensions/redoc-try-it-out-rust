@@ -6,40 +6,6 @@ use wasm_bindgen_futures::JsFuture;
 use web_sys::{js_sys, window, Document, Element, HtmlScriptElement};
 use redoc_theme::ThemOptions;
 
-fn parse_option_for<T>(
-    key: String,
-    value: JsValue,
-    type_str: &str,
-    convert: impl Fn(&JsValue) -> Option<T>,
-) -> Result<T, JsValue> {
-    if type_str == value.js_typeof().as_string().unwrap_or_default() {
-        match convert(&value) {
-            Some(val) => Ok(val),
-            None => Err(JsValue::from_str(&format!(
-                "{} failed to convert value to {}",
-                key, type_str
-            ))),
-        }
-    } else {
-        Err(JsValue::from_str(&format!(
-            "{} only accepts {} values",
-            key, type_str
-        )))
-    }
-}
-
-fn parse_boolean_option_for(key: String, value: JsValue) -> Result<bool, JsValue> {
-    parse_option_for(key, value, "boolean", JsValue::as_bool)
-}
-
-fn parse_u32_option_for(key: String, value: JsValue) -> Result<u32, JsValue> {
-    parse_option_for(key, value, "number", |v| v.as_f64().map(|v| v as u32))
-}
-
-fn parse_string_option_for(key: String, value: JsValue) -> Result<String, JsValue> {
-    parse_option_for(key, value, "string", JsValue::as_string)
-}
-
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -61,7 +27,7 @@ pub struct RedocTryItOut {
 
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct DependenciesVersions {
     pub jquery: String,
     pub jquery_scroll_to: String,
@@ -77,7 +43,7 @@ impl Default for DependenciesVersions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct AuthBtnOptions {
     pub pos_selector: Option<String>,
     pub text: Option<String>,
@@ -95,7 +61,7 @@ impl Default for AuthBtnOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct TryBtnOptions {
     sibling_selector: Option<String>,
     text: Option<String>,
@@ -115,196 +81,7 @@ impl Default for TryBtnOptions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SwaggerOptions {
-    url: Option<String>,
-    dom_id: Option<String>,
-    version: Option<String>,
-    authorize_btn_selector: Option<String>,
-    authorize_done_btn_selector: Option<String>,
-    authorize_modal_selector: Option<String>,
-    authorize_modal_close_btn_selector: Option<String>,
-    operation_section_container_selector: Option<String>,
-    operation_container_selector: Option<String>,
-    operation_summary_pattern_selector: Option<String>,
-    hide_class: Option<String>,
-    show_class: Option<String>,
-    auth_modal_class: Option<String>,
-    selected_operation_container_class: Option<String>,
-    wrapper_selector: Option<String>,
-}
-
-impl Default for SwaggerOptions {
-    fn default() -> Self {
-        Self {
-            url: Option::default(),
-            dom_id: Option::default(),
-            version: Option::default(),
-            authorize_btn_selector: Option::default(),
-            authorize_done_btn_selector: Option::default(),
-            authorize_modal_selector: Option::default(),
-            authorize_modal_close_btn_selector: Option::default(),
-            operation_section_container_selector: Option::default(),
-            operation_container_selector: Option::default(),
-            operation_summary_pattern_selector: Option::default(),
-            hide_class: Option::default(),
-            show_class: Option::default(),
-            auth_modal_class: Option::default(),
-            selected_operation_container_class: Option::default(),
-            wrapper_selector: Option::default(),
-        }
-    }
-}
-
-#[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
-pub struct StyleMatcherOptions {
-    information_container_target_selector: Option<String>,
-    auth_wrapper_target_selector: Option<String>,
-    models_container_target_selector: Option<String>,
-    input_target_selector: Option<String>,
-    select_target_selector: Option<String>,
-    text_area_target_selector: Option<String>,
-    paragraph_target_selector: Option<String>,
-    execute_btn_target_selector: Option<String>,
-    response_container_target_selector: Option<String>,
-    response_title_target_selector: Option<String>,
-    response_header_target_selector: Option<String>,
-    response_table_target_selector: Option<String>,
-    response_wrapper_target_selector: Option<String>,
-    response_wrapper_result_target_selector: Option<String>,
-    response_microlight_target_selector: Option<String>,
-    response_code_target_selector: Option<String>,
-    response_clipboard_target_selector: Option<String>,
-    response_clipboard_btn_target_selector: Option<String>,
-    response_curl_clipboard_target_selector: Option<String>,
-    response_download_target_selector: Option<String>,
-    server_response_header_target_selector: Option<String>,
-    server_response_status_target_selector: Option<String>,
-    server_response_description_target_selector: Option<String>,
-    server_response_sub_header_target_selector: Option<String>,
-    clear_btn_target_selector: Option<String>,
-    operation_tag_target_selector: Option<String>,
-    operation_header_container_target_selector: Option<String>,
-    operation_header_target_selector: Option<String>,
-    operation_header_decoration_target_selector: Option<String>,
-    operation_try_out_target_selector: Option<String>,
-    description_container_target_selector: Option<String>,
-    summary_target_selector: Option<String>,
-    modal_header_container_target_selector: Option<String>,
-    modal_header_target_selector: Option<String>,
-    modal_title_target_selector: Option<String>,
-    modal_title_code_target_selector: Option<String>,
-    modal_label_target_selector: Option<String>,
-    modal_code_target_selector: Option<String>,
-    modal_btn_target_selector: Option<String>,
-    parameters_table_container_target_selector: Option<String>,
-    parameters_head_target_selector: Option<String>,
-    parameter_name_field_target_selector: Option<String>,
-    parameter_type_field_target_selector: Option<String>,
-    parameter_deprecated_target_selector: Option<String>,
-    parameter_source_target_selector: Option<String>,
-    parameter_required_marker_target_selector: Option<String>,
-    parameter_required_target_selector: Option<String>,
-    api_content_source_selector: Option<String>,
-    input_source_selector: Option<String>,
-    code_source_selector: Option<String>,
-    code_box_source_selector: Option<String>,
-    data_section_source_selector: Option<String>,
-    field_source_selector: Option<String>,
-    required_field_source_selector: Option<String>,
-    field_marker_source_selector: Option<String>,
-    san_serif_font_source_selector: Option<String>,
-    alternative_monospace_font_source_selector: Option<String>,
-    alternative_sans_serif_source_selector: Option<String>,
-    h2_source_selector: Option<String>,
-    h3_source_selector: Option<String>,
-    h5_source_selector: Option<String>,
-    label_source_selector: Option<String>,
-    type_source_selector: Option<String>,
-    btn_source_selector: Option<String>,
-    default_border_color_selector: Option<String>,
-    auth_btn_source_selector: Option<String>,
-    http_verb_source_selector: Option<String>,
-}
-
-impl Default for StyleMatcherOptions {
-    fn default() -> Self {
-        Self {
-            information_container_target_selector: Option::default(),
-            auth_wrapper_target_selector: Option::default(),
-            models_container_target_selector: Option::default(),
-            input_target_selector: Option::default(),
-            select_target_selector: Option::default(),
-            text_area_target_selector: Option::default(),
-            paragraph_target_selector: Option::default(),
-            execute_btn_target_selector: Option::default(),
-            response_container_target_selector: Option::default(),
-            response_title_target_selector: Option::default(),
-            response_header_target_selector: Option::default(),
-            response_table_target_selector: Option::default(),
-            response_wrapper_target_selector: Option::default(),
-            response_wrapper_result_target_selector: Option::default(),
-            response_microlight_target_selector: Option::default(),
-            response_code_target_selector: Option::default(),
-            response_clipboard_target_selector: Option::default(),
-            response_clipboard_btn_target_selector: Option::default(),
-            response_curl_clipboard_target_selector: Option::default(),
-            response_download_target_selector: Option::default(),
-            server_response_header_target_selector: Option::default(),
-            server_response_status_target_selector: Option::default(),
-            server_response_description_target_selector: Option::default(),
-            server_response_sub_header_target_selector: Option::default(),
-            clear_btn_target_selector: Option::default(),
-            operation_tag_target_selector: Option::default(),
-            operation_header_container_target_selector: Option::default(),
-            operation_header_target_selector: Option::default(),
-            operation_header_decoration_target_selector: Option::default(),
-            operation_try_out_target_selector: Option::default(),
-            description_container_target_selector: Option::default(),
-            summary_target_selector: Option::default(),
-            modal_header_container_target_selector: Option::default(),
-            modal_header_target_selector: Option::default(),
-            modal_title_target_selector: Option::default(),
-            modal_title_code_target_selector: Option::default(),
-            modal_label_target_selector: Option::default(),
-            modal_code_target_selector: Option::default(),
-            modal_btn_target_selector: Option::default(),
-            parameters_table_container_target_selector: Option::default(),
-            parameters_head_target_selector: Option::default(),
-            parameter_name_field_target_selector: Option::default(),
-            parameter_type_field_target_selector: Option::default(),
-            parameter_deprecated_target_selector: Option::default(),
-            parameter_source_target_selector: Option::default(),
-            parameter_required_marker_target_selector: Option::default(),
-            parameter_required_target_selector: Option::default(),
-            api_content_source_selector: Option::default(),
-            input_source_selector: Option::default(),
-            code_source_selector: Option::default(),
-            code_box_source_selector: Option::default(),
-            data_section_source_selector: Option::default(),
-            field_source_selector: Option::default(),
-            required_field_source_selector: Option::default(),
-            field_marker_source_selector: Option::default(),
-            san_serif_font_source_selector: Option::default(),
-            alternative_monospace_font_source_selector: Option::default(),
-            alternative_sans_serif_source_selector: Option::default(),
-            h2_source_selector: Option::default(),
-            h3_source_selector: Option::default(),
-            h5_source_selector: Option::default(),
-            label_source_selector: Option::default(),
-            type_source_selector: Option::default(),
-            btn_source_selector: Option::default(),
-            default_border_color_selector: Option::default(),
-            auth_btn_source_selector: Option::default(),
-            http_verb_source_selector: Option::default(),
-        }
-    }
-}
-
-#[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct RedocTryItOutOptions {
     doc_url: String,
     redoc_version: String,
@@ -316,8 +93,6 @@ pub struct RedocTryItOutOptions {
     dependencies_versions: DependenciesVersions,
     auth_btn: AuthBtnOptions,
     try_btn: TryBtnOptions,
-    swagger_options: SwaggerOptions,
-    styler_matcher: StyleMatcherOptions,
 }
 
 impl Default for RedocTryItOutOptions {
@@ -333,14 +108,12 @@ impl Default for RedocTryItOutOptions {
             dependencies_versions: Default::default(),
             auth_btn: Default::default(),
             try_btn: Default::default(),
-            swagger_options: Default::default(),
-            styler_matcher: Default::default(),
         }
     }
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct RedocOptions {
     /** disable search indexing and search box */
@@ -417,365 +190,15 @@ pub struct RedocOptions {
     /** if set, payload sample will be inserted at this index or last. Indexes start from 0.*/
     payload_sample_idx: Option<u32>,
     /** ReDoc theme. For details check theme docs. */
-    theme: ThemOptions,
+    #[serde(default)]
+    theme: Option<ThemOptions>,
     /** if set, the spec is considered untrusted and all HTML/markdown is sanitized to prevent XSS.
      * Disabled by default for performance reasons. Enable this option if you work with untrusted user data!
      **/
     untrusted_spec: Option<bool>,
     /** RedocTryItOut options */
-    _redoc_try_it_out: RedocTryItOutOptions,
-}
-
-#[wasm_bindgen]
-impl RedocOptions {
-    #[wasm_bindgen(constructor)]
-    pub fn new() -> RedocOptions {
-        RedocOptions::default()
-    }
-
-    #[wasm_bindgen(js_name = setDisableSearch)]
-    pub fn set_disable_search(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_disable_search".to_string(), value).map(|val| {
-            self.disable_search = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setExpandDefaultServerVariables)]
-    pub fn set_expand_default_server_variables(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_expand_default_server_variables".to_string(), value).map(
-            |val| {
-                self.expand_default_server_variables = Some(val);
-                self
-            },
-        )
-    }
-
-    #[wasm_bindgen(js_name = setExpandResponses)]
-    pub fn set_expand_responses(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_expand_responses".to_string(), value).map(|val| {
-            self.expand_responses = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setGeneratedPayloadSamplesMaxDepth)]
-    pub fn set_generated_payload_samples_max_depth(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_u32_option_for("set_generated_payload_samples_max_depth".to_string(), value).map(
-            |val| {
-                self.generated_payload_samples_max_depth = Some(val);
-                self
-            },
-        )
-    }
-
-    #[wasm_bindgen(js_name = setMaxDisplayedEnumValues)]
-    pub fn set_max_displayed_enum_values(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_u32_option_for("set_max_displayed_enum_values".to_string(), value).map(|val| {
-            self.max_displayed_enum_values = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideDownloadButton)]
-    pub fn set_hide_download_button(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_download_button".to_string(), value).map(|val| {
-            self.hide_download_button = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideHostname)]
-    pub fn set_hide_hostname(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_hostname".to_string(), value).map(|val| {
-            self.hide_hostname = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideLoading)]
-    pub fn set_hide_loading(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_loading".to_string(), value).map(|val| {
-            self.hide_loading = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideSchemaPattern)]
-    pub fn set_hide_schema_pattern(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_schema_pattern".to_string(), value).map(|val| {
-            self.hide_schema_pattern = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideSingleRequestSampleTab)]
-    pub fn set_hide_single_request_sample_tab(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_single_request_sample_tab".to_string(), value).map(
-            |val| {
-                self.hide_single_request_sample_tab = Some(val);
-                self
-            },
-        )
-    }
-
-    #[wasm_bindgen(js_name = setExpandSingleSchemaField)]
-    pub fn set_expand_single_schema_field(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_expand_single_schema_field".to_string(), value).map(|val| {
-            self.expand_single_schema_field = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setJsonSampleExpandLevel)]
-    pub fn set_json_sample_expand_level(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_u32_option_for("set_json_sample_expand_level".to_string(), value).map(|val| {
-            self.json_sample_expand_level = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setHideSchemaTitles)]
-    pub fn set_hide_schema_titles(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_hide_schema_titles".to_string(), value).map(|val| {
-            self.hide_schema_titles = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setSimpleOneOfTypeLabel)]
-    pub fn set_simple_one_of_type_label(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_simple_one_of_type_label".to_string(), value).map(|val| {
-            self.simple_one_of_type_label = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setLazyRendering)]
-    pub fn set_lazy_rendering(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_lazy_rendering".to_string(), value).map(|val| {
-            self.lazy_rendering = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setMenuToggle)]
-    pub fn set_menu_toggle(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_menu_toggle".to_string(), value).map(|val| {
-            self.menu_toggle = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setNativeScrollbars)]
-    pub fn set_native_scrollbars(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_native_scrollbars".to_string(), value).map(|val| {
-            self.native_scrollbars = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setNoAutoAuth)]
-    pub fn set_no_auto_auth(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_no_auto_auth".to_string(), value).map(|val| {
-            self.no_auto_auth = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setOnlyRequiredInSamples)]
-    pub fn set_only_required_in_samples(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_only_required_in_samples".to_string(), value).map(|val| {
-            self.only_required_in_samples = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setPathInMiddlePanel)]
-    pub fn set_path_in_middle_panel(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_path_in_middle_panel".to_string(), value).map(|val| {
-            self.path_in_middle_panel = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setRequiredPropsFirst)]
-    pub fn set_required_props_first(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_required_props_first".to_string(), value).map(|val| {
-            self.required_props_first = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setScrollYOffset)]
-    pub fn set_scroll_y_offset(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_scroll_y_offset".to_string(), value).map(|val| {
-            self.scroll_y_offset = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setSelector)]
-    pub fn set_selector(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_selector".to_string(), value).map(|val| {
-            self.selector = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setShowExtensions)]
-    pub fn set_show_extensions(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        let mut extensions = vec![];
-        if value.is_array() {
-            let array = js_sys::Array::from(&value);
-            for i in 0..array.length() {
-                let val = array.get(i);
-                if val.is_string() {
-                    extensions.push(val.as_string().unwrap());
-                }
-            }
-        } else {
-            return Err(JsValue::from_str(
-                "set_show_extensions only accepts array values",
-            ));
-        }
-        self.show_extensions = Some(extensions);
-        Ok(self)
-    }
-
-    #[wasm_bindgen(js_name = setSortPropsAlphabetically)]
-    pub fn set_sort_props_alphabetically(
-        mut self,
-        value: JsValue,
-    ) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_sort_props_alphabetically".to_string(), value).map(|val| {
-            self.sort_props_alphabetically = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setPayloadSampleIdx)]
-    pub fn set_payload_sample_idx(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_u32_option_for("set_payload_sample_idx".to_string(), value).map(|val| {
-            self.payload_sample_idx = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setUntrustedSpec)]
-    pub fn set_untrusted_spec(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_untrusted_spec".to_string(), value).map(|val| {
-            self.untrusted_spec = Some(val);
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setRedocVersion)]
-    pub fn set_redoc_version(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_redoc_version".to_string(), value).map(|val| {
-            self._redoc_try_it_out.redoc_version = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setTryItOutEnabled)]
-    pub fn set_try_it_out_enabled(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_boolean_option_for("set_try_it_out_enabled".to_string(), value).map(|val| {
-            self._redoc_try_it_out.try_it_out_enabled = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setTryItBoxContainerId)]
-    pub fn set_try_it_box_container_id(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_try_it_box_container_id".to_string(), value).map(|val| {
-            self._redoc_try_it_out.try_it_box_container_id = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setContainerId)]
-    pub fn set_container_id(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_container_id".to_string(), value).map(|val| {
-            self._redoc_try_it_out.container_id = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setOperationBoxSelector)]
-    pub fn set_operation_box_selector(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_operation_box_selector".to_string(), value).map(|val| {
-            self._redoc_try_it_out.operation_box_selector = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setSelectedOperationClass)]
-    pub fn set_selected_operation_class(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_selected_operation_class".to_string(), value).map(|val| {
-            self._redoc_try_it_out.selected_operation_class = val;
-            self
-        })
-    }
-
-    #[wasm_bindgen(js_name = setDocUrl)]
-    pub fn set_doc_url(mut self, value: JsValue) -> Result<RedocOptions, JsValue> {
-        parse_string_option_for("set_doc_url".to_string(), value).map(|val| {
-            self._redoc_try_it_out.doc_url = val;
-            self
-        })
-    }
-}
-
-impl Default for RedocOptions {
-    fn default() -> Self {
-        Self {
-            disable_search: Option::default(),
-            expand_default_server_variables: Option::default(),
-            expand_responses: Option::default(),
-            generated_payload_samples_max_depth: Option::default(),
-            max_displayed_enum_values: Option::default(),
-            hide_download_button: Option::default(),
-            hide_hostname: Option::default(),
-            hide_loading: Option::default(),
-            hide_schema_pattern: Option::default(),
-            hide_single_request_sample_tab: Option::default(),
-            expand_single_schema_field: Option::default(),
-            json_sample_expand_level: Option::default(),
-            hide_schema_titles: Option::default(),
-            simple_one_of_type_label: Option::default(),
-            lazy_rendering: Option::default(),
-            menu_toggle: Option::default(),
-            native_scrollbars: Option::default(),
-            no_auto_auth: Option::default(),
-            only_required_in_samples: Option::default(),
-            path_in_middle_panel: Option::default(),
-            required_props_first: Option::default(),
-            scroll_y_offset: Option::default(),
-            selector: Option::default(),
-            show_extensions: Option::default(),
-            sort_props_alphabetically: Option::default(),
-            payload_sample_idx: Option::default(),
-            theme: ThemOptions::default(),
-            untrusted_spec: Option::default(),
-            _redoc_try_it_out: RedocTryItOutOptions::default(),
-        }
-    }
+    #[serde(default = "RedocTryItOutOptions::default")]
+    pub redoc_try_it_out: RedocTryItOutOptions,
 }
 
 #[wasm_bindgen]
@@ -789,18 +212,21 @@ impl RedocTryItOut {
         Ok(RedocTryItOut { document })
     }
 
-    pub async fn init(&self, config: RedocOptions) -> Result<(), JsValue> {
+    pub async fn init(&self, config: JsValue) -> Result<(), JsValue> {
+        let config: RedocOptions = serde_wasm_bindgen::from_value(config)
+            .map_err(|e| JsValue::from_str(&format!("Failed to parse config: {:?}", e)))?;
+        log(&format!("config: {:?}", config));
         self.add_script_tag(format!(
             "https://cdn.jsdelivr.net/npm/redoc@{}/bundles/redoc.standalone.min.js",
-            config._redoc_try_it_out.redoc_version
+            config.redoc_try_it_out.redoc_version
         ))
         .await?;
         let options = serde_wasm_bindgen::to_value(&config).unwrap();
         let redoc_container = self
             .document
-            .get_element_by_id(config._redoc_try_it_out.container_id.as_str())
+            .get_element_by_id(config.redoc_try_it_out.container_id.as_str())
             .ok_or_else(|| JsValue::from_str("should have a redoc container"))?;
-        let doc_url = config._redoc_try_it_out.doc_url;
+        let doc_url = &config.redoc_try_it_out.doc_url;
         let init_promise = js_sys::Promise::new(&mut move |resolve, reject| {
             let init_callback = Closure::wrap(Box::new(move |err: JsValue| {
                 if err.is_undefined() {
