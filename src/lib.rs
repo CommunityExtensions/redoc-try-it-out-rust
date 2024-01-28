@@ -22,6 +22,7 @@ pub struct RedocTryItOut {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct DependenciesVersions {
     pub jquery: String,
     pub jquery_scroll_to: String,
@@ -38,6 +39,7 @@ impl Default for DependenciesVersions {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct AuthBtnOptions {
     pub pos_selector: Option<String>,
     pub text: Option<String>,
@@ -56,6 +58,7 @@ impl Default for AuthBtnOptions {
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct TryBtnOptions {
     sibling_selector: Option<String>,
     text: Option<String>,
