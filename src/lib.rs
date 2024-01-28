@@ -24,8 +24,8 @@ pub struct RedocTryItOut {
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct DependenciesVersions {
-    pub jquery: String,
-    pub jquery_scroll_to: String,
+    jquery: String,
+    jquery_scroll_to: String,
 }
 
 impl Default for DependenciesVersions {
@@ -41,9 +41,9 @@ impl Default for DependenciesVersions {
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthBtnOptions {
-    pub pos_selector: Option<String>,
-    pub text: Option<String>,
-    pub class_name: Option<String>,
+    pos_selector: Option<String>,
+    text: Option<String>,
+    class_name: Option<String>,
 }
 
 impl Default for AuthBtnOptions {
@@ -318,6 +318,29 @@ mod tests {
     use super::*;
     use serde_wasm_bindgen::{from_value, to_value};
     use wasm_bindgen_test::*;
+
+    // Verify that struct can be deserialized from JSON with camelCase keys
+    #[wasm_bindgen_test]
+    fn test_auth_btn_options_from_json() {
+        let json = r###"
+            {
+                "posSelector": "#redoc-container",
+                "text": "Authorize",
+                "className": "auth-btn"
+            }
+        "###;
+
+        let expected = AuthBtnOptions {
+            pos_selector: Some("#redoc-container".to_string()),
+            text: Some("Authorize".to_string()),
+            class_name: Some("auth-btn".to_string()),
+        };
+
+        let actual: AuthBtnOptions =
+            serde_wasm_bindgen::from_value(js_sys::JSON::parse(json).unwrap()).unwrap();
+
+        assert_eq!(expected, actual);
+    }
 
     #[wasm_bindgen_test]
     fn test_auth_btn_options() {

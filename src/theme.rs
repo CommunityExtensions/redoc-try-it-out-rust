@@ -144,7 +144,30 @@ pub struct RightPanel {
 mod tests {
     use super::*;
     use serde_wasm_bindgen::{from_value, to_value};
+    use wasm_bindgen_futures::js_sys;
     use wasm_bindgen_test::*;
+
+    // Verify that struct can be deserialized from JSON with camelCase keys
+    #[wasm_bindgen_test]
+    fn test_right_panel_options_from_json() {
+        let json = r###"
+            {
+                "backgroundColor": "#fafafa",
+                "width": "40%",
+                "textColor": "#333333"
+            }
+        "###;
+
+        let expected = RightPanel {
+            background_color: Some("#fafafa".to_string()),
+            width: Some("40%".to_string()),
+            text_color: Some("#333333".to_string()),
+        };
+
+        let deserialized: RightPanel = from_value(js_sys::JSON::parse(json).unwrap()).unwrap();
+
+        assert_eq!(expected, deserialized);
+    }
 
     #[wasm_bindgen_test]
     fn test_theme_options() {
@@ -206,16 +229,16 @@ mod tests {
                 background_color: Some("10".to_string()),
                 text_color: Some("10".to_string()),
                 active_text_color: Some("10".to_string()),
-                group_items: Some(GroupItems{
+                group_items: Some(GroupItems {
                     text_transform: Some("10".to_string()),
                 }),
-                level1_items: Some(Level1Items{
+                level1_items: Some(Level1Items {
                     text_transform: Some("10".to_string()),
                 }),
-                arrow: Some(Arrow{
+                arrow: Some(Arrow {
                     size: Some("10".to_string()),
                     color: Some("10".to_string()),
-                })
+                }),
             }),
         };
 
