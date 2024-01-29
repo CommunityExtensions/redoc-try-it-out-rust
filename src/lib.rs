@@ -319,17 +319,16 @@ mod tests {
     use super::*;
     use serde_wasm_bindgen::{from_value, to_value};
     use wasm_bindgen_test::*;
+    use pretty_assertions::assert_eq;
 
     // verify that not all fields are required in the JSON
     #[wasm_bindgen_test]
     fn test_try_it_out_options_from_json() {
         let json = r###"
             {
-                "redocVersion": "2.1.3",
+                "redocVersion": "9.9.9",
                 "tryItOutEnabled": true,
-                "containerId": "redoc-container",
-                "operationBoxSelector": "[data-section-id]",
-                "selectedOperationClass": "try",
+                "containerId": "custom-redoc-container",
                 "dependenciesVersions": {
                     "jqueryScrollTo": "4.4.4"
                 },
@@ -347,10 +346,10 @@ mod tests {
         "###;
 
         let expected = RedocTryItOutOptions {
-            redoc_version: "2.1.3".to_string(),
+            redoc_version: "9.9.9".to_string(),
             try_it_out_enabled: true,
             try_it_box_container_id: "try-out-wrapper".to_string(),
-            container_id: "redoc-container".to_string(),
+            container_id: "custom-redoc-container".to_string(),
             operation_box_selector: "[data-section-id]".to_string(),
             selected_operation_class: "try".to_string(),
             dependencies_versions: DependenciesVersions {
