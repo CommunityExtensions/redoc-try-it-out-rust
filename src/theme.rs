@@ -5,139 +5,139 @@ use wasm_bindgen::prelude::*;
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct ThemeOptions {
-    spacing: Option<Spacing>,
-    breakpoints: Option<Breakpoints>,
-    colors: Option<Colors>,
-    typography: Option<Typography>,
-    sidebar: Option<Menu>,
-    logo: Option<Logo>,
-    right_panel: Option<RightPanel>,
+    pub spacing: Option<Spacing>,
+    pub breakpoints: Option<Breakpoints>,
+    pub colors: Option<Colors>,
+    pub typography: Option<Typography>,
+    pub sidebar: Option<Menu>,
+    pub logo: Option<Logo>,
+    pub right_panel: Option<RightPanel>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Spacing {
-    unit: Option<u32>,
-    section_horizontal: Option<u32>,
-    section_vertical: Option<u32>,
+    pub unit: Option<u32>,
+    pub section_horizontal: Option<u32>,
+    pub section_vertical: Option<u32>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Breakpoints {
-    small: Option<String>,
-    medium: Option<String>,
-    large: Option<String>,
+    pub small: Option<String>,
+    pub medium: Option<String>,
+    pub large: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Colors {
-    tonal_offset: Option<f32>,
+    pub tonal_offset: Option<f32>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Typography {
-    font_size: Option<String>,
-    line_height: Option<String>,
-    font_weight_regular: Option<u32>,
-    font_weight_bold: Option<u32>,
-    font_weight_light: Option<u32>,
-    font_family: Option<String>,
-    smoothing: Option<String>,
-    optimize_speed: Option<bool>,
-    headings: Option<Headings>,
-    code: Option<Code>,
-    links: Option<Links>,
+    pub font_size: Option<String>,
+    pub line_height: Option<String>,
+    pub font_weight_regular: Option<u32>,
+    pub font_weight_bold: Option<u32>,
+    pub font_weight_light: Option<u32>,
+    pub font_family: Option<String>,
+    pub smoothing: Option<String>,
+    pub optimize_speed: Option<bool>,
+    pub headings: Option<Headings>,
+    pub code: Option<Code>,
+    pub links: Option<Links>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Headings {
-    font_family: Option<String>,
-    font_weight: Option<u32>,
-    line_height: Option<String>,
+    pub font_family: Option<String>,
+    pub font_weight: Option<u32>,
+    pub line_height: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Code {
-    font_size: Option<String>,
-    font_family: Option<String>,
-    line_height: Option<u32>,
-    font_weight: Option<u32>,
-    color: Option<String>,
-    background_color: Option<String>,
-    wrap: Option<bool>,
+    pub font_size: Option<String>,
+    pub font_family: Option<String>,
+    pub line_height: Option<u32>,
+    pub font_weight: Option<u32>,
+    pub color: Option<String>,
+    pub background_color: Option<String>,
+    pub wrap: Option<bool>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Links {
-    color: Option<String>,
-    visited: Option<String>,
-    hover: Option<String>,
+    pub color: Option<String>,
+    pub visited: Option<String>,
+    pub hover: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Menu {
-    width: Option<String>,
-    background_color: Option<String>,
-    text_color: Option<String>,
-    active_text_color: Option<String>,
-    group_items: Option<GroupItems>,
-    level1_items: Option<Level1Items>,
-    arrow: Option<Arrow>,
+    pub width: Option<String>,
+    pub background_color: Option<String>,
+    pub text_color: Option<String>,
+    pub active_text_color: Option<String>,
+    pub group_items: Option<GroupItems>,
+    pub level1_items: Option<Level1Items>,
+    pub arrow: Option<Arrow>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct GroupItems {
-    text_transform: Option<String>,
+    pub text_transform: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Level1Items {
-    text_transform: Option<String>,
+    pub text_transform: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Arrow {
-    size: Option<String>,
-    color: Option<String>,
+    pub size: Option<String>,
+    pub color: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct Logo {
-    max_height: Option<String>,
-    max_width: Option<String>,
-    gutter: Option<String>,
+    pub max_height: Option<String>,
+    pub max_width: Option<String>,
+    pub gutter: Option<String>,
 }
 
 #[wasm_bindgen(getter_with_clone)]
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RightPanel {
-    background_color: Option<String>,
-    width: Option<String>,
-    text_color: Option<String>,
+    pub background_color: Option<String>,
+    pub width: Option<String>,
+    pub text_color: Option<String>,
 }
 
 #[cfg(test)]
