@@ -6,6 +6,38 @@ use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{js_sys, window, Document, Element, HtmlScriptElement};
 
+fn try_it_out_enabled_default() -> bool {
+    true
+}
+
+fn redoc_version_default() -> String {
+    "2.1.3".to_string()
+}
+
+fn try_it_box_container_id_default() -> String {
+    "try-out-wrapper".to_string()
+}
+
+fn container_id_default() -> String {
+    "redoc-container".to_string()
+}
+
+fn operation_box_selector_default() -> String {
+    "[data-section-id]".to_string()
+}
+
+fn selected_operation_class_default() -> String {
+    "try".to_string()
+}
+
+fn jquery_default() -> String {
+    "3.5.1".to_string()
+}
+
+fn jquery_scroll_to_default() -> String {
+    "2.1.3".to_string()
+}
+
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -21,20 +53,13 @@ pub struct RedocTryItOut {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct DependenciesVersions {
+    #[serde(default = "jquery_default")]
     jquery: String,
+    #[serde(default = "jquery_scroll_to_default")]
     jquery_scroll_to: String,
-}
-
-impl Default for DependenciesVersions {
-    fn default() -> Self {
-        Self {
-            jquery: "3.5.1".to_string(),
-            jquery_scroll_to: "2.1.3".to_string(),
-        }
-    }
 }
 
 #[wasm_bindgen(getter_with_clone)]
@@ -77,32 +102,8 @@ impl Default for TryBtnOptions {
     }
 }
 
-fn try_it_out_enabled_default() -> bool {
-    true
-}
-
-fn redoc_version_default() -> String {
-    "2.1.3".to_string()
-}
-
-fn try_it_box_container_id_default() -> String {
-    "try-out-wrapper".to_string()
-}
-
-fn container_id_default() -> String {
-    "redoc-container".to_string()
-}
-
-fn operation_box_selector_default() -> String {
-    "[data-section-id]".to_string()
-}
-
-fn selected_operation_class_default() -> String {
-    "try".to_string()
-}
-
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct RedocTryItOutOptions {
     #[serde(default = "redoc_version_default")]
@@ -318,6 +319,62 @@ mod tests {
     use super::*;
     use serde_wasm_bindgen::{from_value, to_value};
     use wasm_bindgen_test::*;
+
+    // verify that not all fields are required in the JSON
+    #[wasm_bindgen_test]
+    fn test_try_it_out_options_from_json() {
+        let json = r###"
+            {
+                "redocVersion": "2.1.3",
+                "tryItOutEnabled": true,
+                "containerId": "redoc-container",
+                "operationBoxSelector": "[data-section-id]",
+                "selectedOperationClass": "try",
+                "dependenciesVersions": {
+                    "jqueryScrollTo": "4.4.4"
+                },
+                "authBtn": {
+                    "posSelector": "#redoc-container",
+                    "text": "Authorize",
+                    "className": "auth-btn"
+                },
+                "tryBtn": {
+                    "text": "Try it out",
+                    "className": "try-btn",
+                    "selectedClassName": "try-btn-selected"
+                }
+            }
+        "###;
+
+        let expected = RedocTryItOutOptions {
+            redoc_version: "2.1.3".to_string(),
+            try_it_out_enabled: true,
+            try_it_box_container_id: "try-out-wrapper".to_string(),
+            container_id: "redoc-container".to_string(),
+            operation_box_selector: "[data-section-id]".to_string(),
+            selected_operation_class: "try".to_string(),
+            dependencies_versions: DependenciesVersions {
+                jquery: "3.5.1".to_string(),
+                jquery_scroll_to: "4.4.4".to_string(),
+            },
+            auth_btn: AuthBtnOptions {
+                pos_selector: Some("#redoc-container".to_string()),
+                text: Some("Authorize".to_string()),
+                class_name: Some("auth-btn".to_string()),
+            },
+            try_btn: TryBtnOptions {
+                sibling_selector: None,
+                text: Some("Try it out".to_string()),
+                class_name: Some("try-btn".to_string()),
+                selected_class_name: Some("try-btn-selected".to_string()),
+            },
+        };
+
+        let actual: RedocTryItOutOptions =
+            serde_wasm_bindgen::from_value(js_sys::JSON::parse(json).unwrap()).unwrap();
+
+        assert_eq!(expected, actual);
+    }
 
     // Verify that struct can be deserialized from JSON with camelCase keys
     #[wasm_bindgen_test]
