@@ -63,7 +63,7 @@ pub struct DependenciesVersions {
 }
 
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct AuthBtnOptions {
     pos_selector: Option<String>,
@@ -71,35 +71,14 @@ pub struct AuthBtnOptions {
     class_name: Option<String>,
 }
 
-impl Default for AuthBtnOptions {
-    fn default() -> Self {
-        Self {
-            pos_selector: Option::default(),
-            text: Option::default(),
-            class_name: Option::default(),
-        }
-    }
-}
-
 #[wasm_bindgen(getter_with_clone)]
-#[derive(Deserialize, Serialize, Debug, Clone, PartialEq)]
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, serde_derive_default::Default)]
 #[serde(rename_all = "camelCase")]
 pub struct TryBtnOptions {
     sibling_selector: Option<String>,
     text: Option<String>,
     class_name: Option<String>,
     selected_class_name: Option<String>,
-}
-
-impl Default for TryBtnOptions {
-    fn default() -> Self {
-        Self {
-            sibling_selector: Option::default(),
-            text: Option::default(),
-            class_name: Option::default(),
-            selected_class_name: Option::default(),
-        }
-    }
 }
 
 #[wasm_bindgen(getter_with_clone)]
